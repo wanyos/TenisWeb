@@ -1,0 +1,224 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inconsolata', monospace;
+    color: white;
+    --color-fondo: #215c75;
+    --color-fuente: white;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+body{
+    background: linear-gradient(90deg, blue, #93adf5);
+    height: 100%;
+}
+
+.titulo{
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    height: 75px;
+    padding-left: 10px;
+}
+
+h1, img{
+    display: inline-block;;
+}
+
+.titulo img{
+    width: 50px;
+    height: 50px;
+    padding-top: 10px;
+}
+
+.estilo-caja{
+    background-color: var(--color-fondo);
+    width: 90%;
+    height: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-top: 15px;
+    padding-right: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px black;
+    display: flex;
+}
+
+section .estilo-caja {
+    justify-content: space-between;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+a{
+  text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+.menu-datos{
+    margin-left: 2rem;
+}
+
+.menu-datos a{
+  padding-left: 20px;
+}
+
+
+.atras{
+    margin-left: 20px;
+}
+
+.menu-atras{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    font-size: 20px;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.principal{
+    margin-top: 15px;
+    height: 75vh;
+}
+
+.principal-img{
+    background-image: url("../img/ball-tennis.jpg");
+    background-size: cover;
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 1%;
+    padding-left: 2.5%;
+}
+
+
+.div-tabla{
+    background-color: #215c75;
+    width: 80%;
+}
+
+.div-tabla table{
+    width: 60%;
+    margin-top: 1em;
+    margin-left: 2em;
+    border-collapse: separate;
+    border-spacing: 20px;
+    border: 1px solid black;
+}
+
+.div-tabla table th, td{
+    text-align: center;
+}
+
+.div-tabla table thead td{
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+
+
+
+.div-crear{
+    width: 80%;
+}
+
+.div-crear-jugador{
+    margin-top: 1em;
+    margin-left: 5em;
+    padding: 10px;
+    width: 60%;
+}
+
+.div-crear-jugador form{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    font-family: 'Inconsolata', monospace;
+    color: var(--color-fuente);
+}
+
+.div-crear-jugador input{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    margin-bottom: 25px;
+    background-color: inherit;
+    font-size: 15px;
+}
+
+.div-crear-jugador label{
+    margin-bottom: 10px;
+}
+
+.div-crear-jugador button{
+    width: 80px;
+    height: 50px;
+    margin-top: 15px;
+    cursor: pointer;
+    background-color: var(--color-fondo);
+    font-family: 'Inconsolata', monospace;
+    color: var(--color-fuente);
+    box-shadow: 10px 10px black;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+
+
+
+
+
+.div-editar-jugador{
+    width: 60%;
+    margin-top: 1em;
+    margin-left: 5em;
+    padding: 10px;
+}
+
+.div-editar-jugador select{
+    margin-left: 10px;
+    text-align: center;
+    font-family: 'Inconsolata', monospace;
+    color: var(--color-fuente);
+    background-color: inherit;
+    font-size: 15px;
+}
+
+.div-editar-jugador select option{
+    color: var(--color-fuente);
+    background-color: var(--color-fondo);
+}
+
+.div-editar-jugador button{
+    margin-left: 10px;
+    width: 80px;
+    height: 50px;
+    margin-top: 15px;
+    cursor: pointer;
+    background-color: #215c75;
+    font-family: 'Inconsolata', monospace;
+    color: var(--color-fuente);
+    box-shadow: 10px 10px black;
+    border-radius: 10px;
+    font-size: 15px;
+}

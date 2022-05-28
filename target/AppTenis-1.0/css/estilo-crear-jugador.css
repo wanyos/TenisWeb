@@ -1,0 +1,53 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+    --color-fondo: #215c75;
+    --tipo-letra: 'Inconsolata', monospace;
+}
+
+.div-crear{
+    width: 80%;
+}
+
+.div-crear-jugador{
+    margin-top: 1em;
+    margin-left: 5em;
+    padding: 10px;
+    width: 60%;
+}
+
+.div-crear-jugador form{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.div-crear-jugador input{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    margin-bottom: 25px;
+    background-color: inherit;
+    font-family: var(--tipo-letra);
+    color: white;
+}
+
+.div-crear-jugador label{
+    margin-bottom: 10px;
+}
+
+.div-crear-jugador button{
+   width: 80%;
+    height: 50px;
+    margin-top: 15px;
+    cursor: pointer;
+    background-color: var(--color-fondo);
+    font-family: 'Inconsolata', monospace;
+    color: white;
+    box-shadow: 10px 10px black;
+    border-radius: 10px;
+}
+
