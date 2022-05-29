@@ -138,18 +138,20 @@ footer{
 
 
 
+
+
 .div-crear{
     width: 80%;
 }
 
-.div-crear-jugador{
+.div-form-crear{
     margin-top: 1em;
     margin-left: 5em;
     padding: 10px;
     width: 60%;
 }
 
-.div-crear-jugador form{
+.div-form-crear form{
     display: flex;
     flex-direction: column;
     width: 60%;
@@ -157,7 +159,7 @@ footer{
     color: var(--color-fuente);
 }
 
-.div-crear-jugador input{
+.div-form-crear input{
     border: none;
     outline: none;
     border-bottom: 1px solid black;
@@ -166,36 +168,22 @@ footer{
     font-size: 15px;
 }
 
-.div-crear-jugador label{
+.div-form-crear label{
     margin-bottom: 10px;
 }
 
-.div-crear-jugador button{
-    width: 80px;
-    height: 50px;
-    margin-top: 15px;
-    cursor: pointer;
-    background-color: var(--color-fondo);
-    font-family: 'Inconsolata', monospace;
-    color: var(--color-fuente);
-    box-shadow: 10px 10px black;
-    border-radius: 10px;
-    font-size: 15px;
-}
 
 
 
 
-
-
-.div-editar-jugador{
+.div-buscarId-jugador{
     width: 60%;
     margin-top: 1em;
     margin-left: 5em;
     padding: 10px;
 }
 
-.div-editar-jugador select{
+.div-buscarId-jugador select{
     margin-left: 10px;
     text-align: center;
     font-family: 'Inconsolata', monospace;
@@ -204,12 +192,15 @@ footer{
     font-size: 15px;
 }
 
-.div-editar-jugador select option{
+.div-buscarId-jugador select option{
     color: var(--color-fuente);
     background-color: var(--color-fondo);
 }
 
-.div-editar-jugador button{
+
+
+
+.estilo-boton{
     margin-left: 10px;
     width: 80px;
     height: 50px;

@@ -25,8 +25,8 @@ public class ServletCrear extends HttpServlet {
    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       String opcion = request.getParameter("opcion");
-       switch(opcion){
+       String nombre_etiqueta = request.getParameter("nombre_etiqueta").toLowerCase();
+       switch(nombre_etiqueta){
            case "jugador":
                crearJugador(request, response);
                break;

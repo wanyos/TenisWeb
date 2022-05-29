@@ -19,27 +19,32 @@ public class ServletControlador extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       String opcion = request.getParameter("opcion");
+       String opcion = request.getParameter("opcion").toLowerCase();
        String nombre_etiqueta = request.getParameter("nombre_etiqueta");
        List<Integer> lista_id;
-       
-       switch(opcion){
-           case "listar":
-               procesarListar(request, response);
-               break;
-           case "crear":
-               request.setAttribute("opcion", "crear");
-               break;
-           case "editar":
-               request.setAttribute("opcion", "editar");
-               lista_id = getListaId(nombre_etiqueta);
-               request.setAttribute("lista_id", lista_id);
-               break;
-           case "eliminar":
-               request.setAttribute("opcion", "eliminar");
-               lista_id = getListaId(nombre_etiqueta);
-               request.setAttribute("lista_id", lista_id);
-               break; 
+    
+        switch (opcion) {
+            case "listar":
+                List<String> colum = getColumnas(nombre_etiqueta);
+                List<Objetos> datos = getListaDatos(nombre_etiqueta);
+
+                request.setAttribute("opcion", "listar");
+                request.setAttribute("columnas", colum);
+                request.setAttribute("datos", datos);
+                break;
+            case "crear":
+                request.setAttribute("opcion", "crear");
+                break;
+            case "editar":
+                request.setAttribute("opcion", "editar");
+                lista_id = getListaId(nombre_etiqueta);
+                request.setAttribute("lista_id", lista_id);
+                break;
+            case "eliminar":
+                request.setAttribute("opcion", "eliminar");
+                lista_id = getListaId(nombre_etiqueta);
+                request.setAttribute("lista_id", lista_id);
+                break;
        }
        request.getRequestDispatcher("generico.jsp").forward(request, response);
     }
@@ -49,21 +54,6 @@ public class ServletControlador extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
     }
-    
-    
-    private void procesarListar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       String nombre_etiqueta = request.getParameter("nombre_etiqueta");
-       List<String> colum = getColumnas(nombre_etiqueta);
-       List<Objetos> datos = getListaDatos(nombre_etiqueta);
-       
-       request.setAttribute("opcion", "listar");
-       request.setAttribute("columnas", colum);
-       request.setAttribute("datos", datos);
-       
-       request.getRequestDispatcher("generico.jsp").forward(request, response);
-    }
-
-    
     
     /**
      * Retorna el nombre de las columnas para la tabla listar

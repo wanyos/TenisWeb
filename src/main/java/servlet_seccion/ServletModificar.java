@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import modelo.*;
 
 
-@WebServlet(name = "ServletEditar", urlPatterns = {"/ServletEditar"})
-public class ServletEditar extends HttpServlet {
+@WebServlet(name = "ServletModificar", urlPatterns = {"/ServletModificar"})
+public class ServletModificar extends HttpServlet {
 
      private String id_select ;
 
@@ -23,24 +23,33 @@ public class ServletEditar extends HttpServlet {
         //se usa todo para el resto de objetos, solo necesita el objeto a mostrar
         id_select = request.getParameter("cbo_id");
         String nombre_etiqueta = request.getParameter("nombre_etiqueta");
+        String opcion = request.getParameter("opcion");
         Objetos obj = getObjeto(nombre_etiqueta, id_select);
-        List<Integer> lista_id = getListaId(obj);
-       
+        String l = request.getParameter("lista_id");
+        String aux = l.substring(1, l.length()-1);
+        String [] lis = aux.split(",");
+        List<String> lista_id = Arrays.asList(lis);
+        
         request.setAttribute("objeto", obj);
-        request.setAttribute("opcion", "editar");
+        request.setAttribute("opcion", opcion);
         request.setAttribute("lista_id", lista_id);
         request.getRequestDispatcher("generico.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nombre_etiqueta = request.getParameter("nombre_etiqueta");
         String opcion = request.getParameter("opcion");
         
-        if(opcion.equalsIgnoreCase("Jugador")){
-            editarJugador(request, response);
-        } else if(opcion.equalsIgnoreCase("Bono")){
+        if(nombre_etiqueta.equalsIgnoreCase("Jugador")){
+            if(opcion.equalsIgnoreCase("editar")){
+              editarJugador(request, response);    
+            } else {
+              eliminarJugador(request, response);     
+            }
+        } else if(nombre_etiqueta.equalsIgnoreCase("Bono")){
             //editarBono(request, response);
-        } else if(opcion.equalsIgnoreCase("Partido")){
+        } else if(nombre_etiqueta.equalsIgnoreCase("Partido")){
             //editarPartido(request, response);
         }
     }
@@ -69,23 +78,6 @@ public class ServletEditar extends HttpServlet {
     }
     
     
-    private List<Integer> getListaId(Objetos obj) {
-        List<Integer> lista = new ArrayList<>();
-        AbstractDao ab = null;
-
-        if (obj instanceof Jugador) {
-            ab = new JugadorDao();
-        } else if (obj instanceof Bono) {
-            //ab = new BonoDao();
-        } else if (obj instanceof Partido) {
-            //ab = new PartidoDao();
-        }
-        if (ab != null) {
-            lista = ab.getListaId();
-        }
-
-        return lista;
-    }
     
     private void editarJugador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(id_select);
@@ -103,6 +95,24 @@ public class ServletEditar extends HttpServlet {
             mensaje = "El jugador "+nombre+" "+apellido+" ha sido editado";
         }
          request.setAttribute("mensaje", mensaje);
+         request.getRequestDispatcher("generico.jsp").forward(request, response);
+    }
+   
+    
+    private void eliminarJugador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(id_select);
+        String nombre = request.getParameter("txt_nombre");
+        String apellido = request.getParameter("txt_apellido");
+        Jugador j = new Jugador(id);
+        IDao interfaceDao = new JugadorDao();
+        int v = interfaceDao.eliminar(j);
+        String mensaje;
+        if (v == 0) {
+            mensaje = "!!!Error el jugador " + nombre + " " + apellido + " no ha sido eliminado...";
+        } else {
+            mensaje = "El jugador " + nombre + " " + apellido + " ha sido eliminado";
+        }
+        request.setAttribute("mensaje", mensaje);
         request.getRequestDispatcher("generico.jsp").forward(request, response);
     }
     

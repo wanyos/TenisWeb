@@ -4,8 +4,8 @@
 <div class="div-crear">
 
     <h3> Crear ${param.nombre_etiqueta} </h3>
-    <c:if test="${param.nombre == 'Jugador'}">
-        <jsp:include page="crear/crear_jugador.jsp"/>
+    <c:if test="${param.nombre_etiqueta == 'Jugador'}">
+        <jsp:include page="crear/form_crear_jugador.jsp"/>
     </c:if>
     
     <c:if test="${param.nombre_etiqueta == 'Bono'}">

@@ -1,11 +1,12 @@
-servlet_seccion\ServletControlador.class
-datos\JugadorDao.class
 modelo\Objetos.class
 servlet_seccion\ServletEditar.class
-modelo\Bono.class
+servlet_seccion\ServletEliminar.class
 datos\AbstractDao.class
 datos\IDao.class
-datos\Conexion.class
 modelo\Jugador.class
+servlet_seccion\ServletControlador.class
+datos\JugadorDao.class
+modelo\Bono.class
+datos\Conexion.class
 modelo\Partido.class
 servlet_seccion\ServletCrear.class

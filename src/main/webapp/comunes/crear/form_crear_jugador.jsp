@@ -1,6 +1,6 @@
 
-<div class="div-crear-jugador">
-    <form action="ServletCrear?opcion=jugador" method="post">
+<div class="div-form-crear">
+    <form action="ServletCrear" method="post">
         <label for="txt_nombre">Nombre</label>
         <input type="text" name="txt_nombre" placeholder="nombre" required/>
 
@@ -9,7 +9,8 @@
 
         <label for="txt_comentario">Comentario</label>
         <input type="text" name="txt_comentario"/>
-
-        <button type="submit" name="btn_crear">Crear</button>
+        
+        <input type="hidden" name="nombre_etiqueta" value="${param.nombre_etiqueta}"/>
+        <button class="estilo-boton" type="submit" name="btn_crear">Crear</button>
     </form>
 </div>
