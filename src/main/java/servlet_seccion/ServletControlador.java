@@ -77,6 +77,11 @@ public class ServletControlador extends HttpServlet {
         return lista;
     }
     
+    /**
+     * Crea la lista con los datos de cada opcion para listar
+     * @param nombre
+     * @return 
+     */
     private List<Objetos> getListaDatos(String nombre) {
         List<Objetos> lista = new ArrayList<>();
         IDao interfaceDao = null;
@@ -94,6 +99,13 @@ public class ServletControlador extends HttpServlet {
         return lista;
     }
     
+    
+    /**
+     * Crea una lista con los id de los objetos de la opción escogida, estos estan en la bd
+     * Se usa para la vista de editar y eliminar donde escogiendo el id vemos los datos del objeto
+     * @param nombre
+     * @return 
+     */
     private List<Integer> getListaId(String nombre) {
         AbstractDao ab = null;
         List<Integer> lista = null;

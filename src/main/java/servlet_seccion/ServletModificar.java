@@ -47,10 +47,21 @@ public class ServletModificar extends HttpServlet {
             } else {
               eliminarJugador(request, response);     
             }
+            
         } else if(nombre_etiqueta.equalsIgnoreCase("Bono")){
-            //editarBono(request, response);
+             if(opcion.equalsIgnoreCase("editar")){
+                //editarBono(request, response);      
+             } else {
+                 //eliminarBono(request, response);
+             }
+           
+            
         } else if(nombre_etiqueta.equalsIgnoreCase("Partido")){
-            //editarPartido(request, response);
+             if(opcion.equalsIgnoreCase("editar")){
+                //editarPartido(request, response);
+             } else {
+                 //eliminarPartido(request, response);
+             }
         }
     }
 
@@ -119,8 +130,16 @@ public class ServletModificar extends HttpServlet {
 //     private void editarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //         
 //     }
+    
+ //    private void eliminarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//         
+//     }
      
 //     private void editarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//         
+//     }
+    
+ //    private void eliminarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //         
 //     }
 

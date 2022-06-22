@@ -31,7 +31,7 @@ public class ServletCrear extends HttpServlet {
                crearJugador(request, response);
                break;
            case "bono":
-               
+               crearBono(request, response);
                break;
            case "partido":
                
@@ -59,5 +59,9 @@ public class ServletCrear extends HttpServlet {
         request.getRequestDispatcher("generico.jsp").forward(request, response);
     }
     
+    
+     private void crearBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         
+     }
 
 }

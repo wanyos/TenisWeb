@@ -116,7 +116,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setInt(1, id);
             rs = ps.executeQuery();
             
-            while(rs.next()){
+            if(rs.next()){
                 int id_j = rs.getInt("id");
                 String nombre = rs.getString("nombre");
                 String apellido = rs.getString("apellido");
