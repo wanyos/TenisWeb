@@ -4,8 +4,6 @@ package datos;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.Jugador;
 import modelo.Objetos;
 
@@ -40,7 +38,7 @@ public class JugadorDao extends AbstractDao implements IDao {
                 lista.add(obj);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(JugadorDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -60,7 +58,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setString(3, j.getComentario());
             v = ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(JugadorDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -81,7 +79,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setInt(4, j.getId());
             v = ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(JugadorDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -99,7 +97,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setInt(1, j.getId());
             v = ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(JugadorDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -125,7 +123,9 @@ public class JugadorDao extends AbstractDao implements IDao {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(JugadorDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
+        } finally {
+            super.cerrarObjetos();
         }
         return j;
     }

@@ -3,6 +3,8 @@ package servlet_seccion;
 
 import datos.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,9 +52,9 @@ public class ServletModificar extends HttpServlet {
             
         } else if(nombre_etiqueta.equalsIgnoreCase("Bono")){
              if(opcion.equalsIgnoreCase("editar")){
-                //editarBono(request, response);      
+                editarBono(request, response);      
              } else {
-                 //eliminarBono(request, response);
+                 eliminarBono(request, response);
              }
            
             
@@ -73,16 +75,18 @@ public class ServletModificar extends HttpServlet {
 
         switch (nombre) {
             case "Jugador":
-                id = Integer.parseInt(select);
                 interfaceDao = new JugadorDao();
-                obj = interfaceDao.getObjeto(id);
                 break;
             case "Bono":
-
+                interfaceDao = new BonoDao();
                 break;
             case "Partdio":
 
                 break;
+        }
+        if(interfaceDao != null){
+             id = Integer.parseInt(select);
+             obj = interfaceDao.getObjeto(id);
         }
 
         return obj;
@@ -127,13 +131,48 @@ public class ServletModificar extends HttpServlet {
         request.getRequestDispatcher("generico.jsp").forward(request, response);
     }
     
-//     private void editarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//         
-//     }
+     private void editarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         int id = Integer.parseInt(id_select);
+         String f = request.getParameter("txt_fecha");
+         String nombre = request.getParameter("txt_nombre");
+         String idj = request.getParameter("txt_id_jugador");
+         String h = request.getParameter("txt_horas");
+         String es = request.getParameter("txt_estado");
+         
+         LocalDate fecha = LocalDate.parse(f, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+         int id_jugador = Integer.parseInt(idj);
+         int horas = Integer.parseInt(h);
+         boolean estado = Boolean.parseBoolean(es);
+       
+         Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
+         IDao interfaceDao = new BonoDao();
+         int v = interfaceDao.editar(b);
+         String mensaje;
+         if (v == 0) {
+             mensaje = "!!!Error el bono " + nombre + " " + id + " no ha sido editado...";
+         } else {
+             mensaje = "El bono " + nombre + " " + id + " ha sido editado";
+         }
+         request.setAttribute("mensaje", mensaje);
+         request.getRequestDispatcher("generico.jsp").forward(request, response);
+         
+     }
     
- //    private void eliminarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//         
-//     }
+     private void eliminarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         int id = Integer.parseInt(id_select);
+         String nombre = request.getParameter("txt_nombre");
+         Bono b = new Bono(id);
+         IDao interfaceDao = new BonoDao();
+        int v = interfaceDao.eliminar(b);
+        String mensaje;
+        if (v == 0) {
+            mensaje = "!!!Error el bono " + nombre + " " + id + " no ha sido eliminado...";
+        } else {
+            mensaje = "El bono " + nombre + " " + id + " ha sido eliminado";
+        }
+        request.setAttribute("mensaje", mensaje);
+        request.getRequestDispatcher("generico.jsp").forward(request, response);
+     }
      
 //     private void editarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //         

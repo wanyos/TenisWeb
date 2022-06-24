@@ -3,6 +3,7 @@ package servlet_seccion;
 
 
 import datos.AbstractDao;
+import datos.BonoDao;
 import datos.IDao;
 import datos.JugadorDao;
 import java.io.IOException;
@@ -89,7 +90,7 @@ public class ServletControlador extends HttpServlet {
          if (nombre.equalsIgnoreCase("jugador")) {
             interfaceDao = new JugadorDao();
         } else if (nombre.equalsIgnoreCase("bono")) {
-            //interfaceDao = new BonoDao();
+            interfaceDao = new BonoDao();
         } else if (nombre.equalsIgnoreCase("partido")) {
             //interfaceDao = new PartidoDao();
         }
@@ -113,7 +114,7 @@ public class ServletControlador extends HttpServlet {
          if (nombre.equalsIgnoreCase("jugador")) {
             ab = new JugadorDao();
         } else if (nombre.equalsIgnoreCase("bono")) {
-            //ab = new BonoDao();
+            ab = new BonoDao();
         } else if (nombre.equalsIgnoreCase("partido")) {
             //ab = new PartidoDao();
         }

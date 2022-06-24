@@ -9,7 +9,7 @@
     </c:if>
     
     <c:if test="${param.nombre_etiqueta == 'Bono'}">
-        <jsp:include page=""/>
+        <jsp:include page="crear/form_crear_bono.jsp"/>
     </c:if>
     
     <c:if test="${param.nombre_etiqueta == 'Partido'}">

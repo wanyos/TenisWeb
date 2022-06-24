@@ -15,7 +15,7 @@
     </c:if>
 
     <c:if test="${param.nombre_etiqueta == 'Bono'}">
-        <jsp:include page=""/>
+        <jsp:include page="variar/variar_objeto_bono.jsp?${lista_id}&${param.nombre_etiqueta}&${objeto}"/>
     </c:if>
 
     <c:if test="${param.nombre_etiqueta == 'Partido'}">

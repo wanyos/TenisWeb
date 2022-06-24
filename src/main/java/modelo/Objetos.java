@@ -14,6 +14,12 @@ public abstract class Objetos {
     public abstract int getId();
     
     
+    /**
+     * Retorna una lista con los nombre de los atributos de la clase del parametro
+     * Se usa para crear las cabeceras de las tablas que listan objetos
+     * @param paquete_clase
+     * @return 
+     */
     protected List<String> getListaCampos(String paquete_clase) {
         List<String> lista_campos = new ArrayList<>();
         Class userClass;

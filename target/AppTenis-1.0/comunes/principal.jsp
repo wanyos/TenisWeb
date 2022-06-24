@@ -12,11 +12,9 @@
             </c:when>
              <c:when test="${opcion == 'eliminar'}">
                  <jsp:include page="editar-eliminar.jsp?nombre_etiqueta=${param.nombre_etiqueta}&${objeto}"/>
-                <%--<jsp:include page="eliminar.jsp?nombre=${param.nombre_etiqueta}&${objeto}"/>--%>
             </c:when>
              <c:when test="${opcion == 'editar'}">
                  <jsp:include page="editar-eliminar.jsp?nombre_etiqueta=${param.nombre_etiqueta}&${objeto}"/>
-                <%--<jsp:include page="editar.jsp?nombre=${param.nombre_etiqueta}&${objeto}"/>--%>
             </c:when>
         </c:choose>
         

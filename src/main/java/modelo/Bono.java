@@ -77,6 +77,8 @@ public class Bono extends Objetos {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+    
+    
 
     @Override
     public List<String> getNombresCampos(){
