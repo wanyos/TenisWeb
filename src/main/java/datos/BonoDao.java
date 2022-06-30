@@ -16,9 +16,19 @@ public class BonoDao extends AbstractDao implements IDao {
     private final String update_mysql = "update bono set fecha=?, nombre=?, id_jugador=?, horas=?, estado=? where id=?";
     private final String delete_mysql = "delete from bono where id=?";
     private final String get_mysql_id = "select * from bono where id=?";
+    private String mensaje_error;
     
     public BonoDao(){}
 
+    @Override
+    public String getMensajeError() {
+        return mensaje_error;
+    }
+
+    private void setMensajeError(String mensaje_error) {
+        this.mensaje_error = mensaje_error;
+    }
+    
     
     @Override
     public List<Objetos> select() {
@@ -41,7 +51,7 @@ public class BonoDao extends AbstractDao implements IDao {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            this.setMensajeError(e.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -64,7 +74,7 @@ public class BonoDao extends AbstractDao implements IDao {
             ps.setBoolean(6, b.isEstado());
             v = ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            this.setMensajeError(e.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -87,7 +97,7 @@ public class BonoDao extends AbstractDao implements IDao {
             ps.setInt(6, b.getId());
             v = ps.executeUpdate();
        } catch (SQLException e){
-           System.out.println(e.getMessage());
+           this.setMensajeError(e.getMessage());
        } finally {
            super.cerrarObjetos();
        }
@@ -106,7 +116,7 @@ public class BonoDao extends AbstractDao implements IDao {
             ps.setInt(1, b.getId());
             v = ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            this.setMensajeError(e.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -134,7 +144,7 @@ public class BonoDao extends AbstractDao implements IDao {
            }
            
        } catch (SQLException e){
-           System.out.println(e.getMessage());
+           this.setMensajeError(e.getMessage());
        } finally {
            super.cerrarObjetos();
        }

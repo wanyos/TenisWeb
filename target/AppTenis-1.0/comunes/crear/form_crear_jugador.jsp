@@ -9,7 +9,7 @@
 
         <label for="txt_comentario">Comentario</label>
         <input type="text" name="txt_comentario"/>
-        
+
         <input type="hidden" name="nombre_etiqueta" value="${param.nombre_etiqueta}"/>
         <button class="estilo-boton" type="submit" name="btn_crear">Crear</button>
     </form>

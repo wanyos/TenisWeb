@@ -12,4 +12,5 @@ public interface IDao {
     int editar(Objetos obj);
     int eliminar(Objetos obj);
     Objetos getObjeto(int id);
+    String getMensajeError();
 }

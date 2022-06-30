@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,13 +22,6 @@
             var el = document.getElementById("div-principal");
             el.className = "estilo-caja principal";
         </script>
-
-        <c:if test="${not empty mensaje}">
-            <script type="text/javascript">
-              alert("${mensaje}");
-            </script>
-        </c:if>
        
-        
     </body>
 </html>

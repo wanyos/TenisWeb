@@ -56,6 +56,7 @@ public class ServletControlador extends HttpServlet {
        
     }
     
+    
     /**
      * Retorna el nombre de las columnas para la tabla listar
      * Usa los atributos de cada clase para nombrar a las columnas
@@ -77,6 +78,7 @@ public class ServletControlador extends HttpServlet {
         }
         return lista;
     }
+    
     
     /**
      * Crea la lista con los datos de cada opcion para listar

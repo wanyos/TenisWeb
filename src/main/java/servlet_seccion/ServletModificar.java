@@ -18,7 +18,8 @@ import modelo.*;
 public class ServletModificar extends HttpServlet {
 
      private String id_select ;
-
+     private List<String> mensaje;
+   
    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -102,34 +103,18 @@ public class ServletModificar extends HttpServlet {
         
         Jugador j = new Jugador(id, nombre, apellido, comentario);
         IDao interfaceDao = new JugadorDao();
-        int v = interfaceDao.editar(j);
-        String mensaje;
-        if(v == 0){
-            mensaje = "!!!Error el jugador "+nombre+" "+apellido+" no ha sido editado...";
-        } else {
-            mensaje = "El jugador "+nombre+" "+apellido+" ha sido editado";
-        }
-         request.setAttribute("mensaje", mensaje);
-         request.getRequestDispatcher("generico.jsp").forward(request, response);
+        editarObjeto(request, response, interfaceDao, j);
     }
    
     
     private void eliminarJugador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(id_select);
-        String nombre = request.getParameter("txt_nombre");
-        String apellido = request.getParameter("txt_apellido");
         Jugador j = new Jugador(id);
         IDao interfaceDao = new JugadorDao();
-        int v = interfaceDao.eliminar(j);
-        String mensaje;
-        if (v == 0) {
-            mensaje = "!!!Error el jugador " + nombre + " " + apellido + " no ha sido eliminado...";
-        } else {
-            mensaje = "El jugador " + nombre + " " + apellido + " ha sido eliminado";
-        }
-        request.setAttribute("mensaje", mensaje);
-        request.getRequestDispatcher("generico.jsp").forward(request, response);
+        eliminarObjeto(request, response, interfaceDao, j);
     }
+    
+    
     
      private void editarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          int id = Integer.parseInt(id_select);
@@ -146,32 +131,14 @@ public class ServletModificar extends HttpServlet {
        
          Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
          IDao interfaceDao = new BonoDao();
-         int v = interfaceDao.editar(b);
-         String mensaje;
-         if (v == 0) {
-             mensaje = "!!!Error el bono " + nombre + " " + id + " no ha sido editado...";
-         } else {
-             mensaje = "El bono " + nombre + " " + id + " ha sido editado";
-         }
-         request.setAttribute("mensaje", mensaje);
-         request.getRequestDispatcher("generico.jsp").forward(request, response);
-         
+         editarObjeto(request, response, interfaceDao, b);
      }
     
      private void eliminarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          int id = Integer.parseInt(id_select);
-         String nombre = request.getParameter("txt_nombre");
          Bono b = new Bono(id);
          IDao interfaceDao = new BonoDao();
-        int v = interfaceDao.eliminar(b);
-        String mensaje;
-        if (v == 0) {
-            mensaje = "!!!Error el bono " + nombre + " " + id + " no ha sido eliminado...";
-        } else {
-            mensaje = "El bono " + nombre + " " + id + " ha sido eliminado";
-        }
-        request.setAttribute("mensaje", mensaje);
-        request.getRequestDispatcher("generico.jsp").forward(request, response);
+         eliminarObjeto(request, response, interfaceDao, b);
      }
      
 //     private void editarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -181,5 +148,56 @@ public class ServletModificar extends HttpServlet {
  //    private void eliminarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //         
 //     }
+     
+     
+     private void editarObjeto (HttpServletRequest request, HttpServletResponse response, IDao interfaceDao, Objetos obj) throws ServletException, IOException {
+         mensaje = new ArrayList<>();
+         int v = interfaceDao.editar(obj);
+    
+        if(v == 0){
+           crearMensajeErrorEditar(obj);
+           mensaje.add(interfaceDao.getMensajeError());
+        } else {
+            crearMensajeCorrectoEditar(obj);
+        }
+         request.setAttribute("mensaje", mensaje);
+         request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
+     }
+     
+     private void crearMensajeErrorEditar(Objetos obj){
+         if(obj instanceof Jugador){
+              mensaje.add(" El jugador "+((Jugador) obj).getNombre()+" "+((Jugador) obj).getApellido()+" no ha sido editado...");
+         } else if(obj instanceof Bono){
+              mensaje.add(" El bono " + ((Bono) obj).getNombre() + " " + obj.getId() + " no ha sido editado...");
+         } else if(obj instanceof Partido){
+             
+         }
+     }
+     
+     private void crearMensajeCorrectoEditar(Objetos obj){
+          if(obj instanceof Jugador){
+              mensaje.add(" El jugador "+((Jugador) obj).getNombre()+" "+((Jugador) obj).getApellido()+" ha sido editado");
+         } else if(obj instanceof Bono){
+              mensaje.add(" El bono " + ((Bono) obj).getNombre() + " " + obj.getId() + " ha sido editado");
+         } else if(obj instanceof Partido){
+             
+         }
+     }
+     
+     
+     private void eliminarObjeto(HttpServletRequest request, HttpServletResponse response, IDao interfaceDao, Objetos obj) throws ServletException, IOException {
+         mensaje = new ArrayList<>();
+         int v = interfaceDao.eliminar(obj);
+    
+        if(v == 0){
+           mensaje.add(" El objeto no ha sido eliminado...");
+           mensaje.add(interfaceDao.getMensajeError());
+        } else {
+            mensaje.add(" El objeto ha sido eliminado...");
+        }
+         request.setAttribute("mensaje", mensaje);
+         request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
+     }
+     
 
 }

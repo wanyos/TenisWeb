@@ -15,9 +15,20 @@ public class JugadorDao extends AbstractDao implements IDao {
     private final String update_mysql = "update jugador set nombre=?, apellido=?, comentario=? where id=?";
     private final String delete_mysql = "delete from jugador where id=?";
     private final String get_mysql_id = "select * from jugador where id=?";
+    private String mensaje_error;
     
     
     public JugadorDao(){}
+
+    @Override
+    public String getMensajeError() {
+        return mensaje_error;
+    }
+
+    private void setMensajeError(String mensaje_error) {
+        this.mensaje_error = mensaje_error;
+    }
+    
     
     
     @Override
@@ -38,7 +49,7 @@ public class JugadorDao extends AbstractDao implements IDao {
                 lista.add(obj);
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            setMensajeError(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -58,7 +69,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setString(3, j.getComentario());
             v = ps.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+             setMensajeError(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -79,7 +90,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setInt(4, j.getId());
             v = ps.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+             setMensajeError(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -97,7 +108,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             ps.setInt(1, j.getId());
             v = ps.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+             setMensajeError(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
@@ -123,7 +134,7 @@ public class JugadorDao extends AbstractDao implements IDao {
             }
             
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+             setMensajeError(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }
