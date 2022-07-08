@@ -122,6 +122,7 @@ public class ParesDao extends AbstractDao implements IDao {
         try {
             cx = super.getConexion();
             ps = cx.prepareStatement(get_mysql_id);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
 
             if (rs.next()) {

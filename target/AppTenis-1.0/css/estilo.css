@@ -188,7 +188,7 @@ footer{
     width: 80%;
     margin-top: 1em;
     margin-left: 3em;
-    padding: 10px;
+    display: flex;
 }
 
 .div-buscarId-jugador select{

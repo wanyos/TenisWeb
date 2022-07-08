@@ -24,35 +24,6 @@
         <jsp:include page="../titulo.jsp"/>
         <jsp:include page="../menu_datos.jsp"/>
 
-        <%
-            JugadorDao j = new JugadorDao();
-            List<Objetos> lista_jugadores = j.select();
-
-            //ParesDao p = new ParesDao();
-           //List<Integer> lista_id_pares = p.getListaId();
-        %>
-
-        <%
-            //String valor_id = (String) request.getAttribute("valor_id_pares");
-           // int id_par = -1;
-            //if (valor_id != null && !valor_id.equals(" --- ")) {
-              //  id_par = Integer.parseInt(valor_id);
-           // }
-            //Objetos pares = p.getObjeto(id_par);
-            Objetos obj_pares = (Objetos)request.getAttribute("objeto_pares");
-        %>
-
-        <%--   <c:if test="${not empty valor_id}">
-               <jsp:include page="../titulo.jsp"/>
-               <jsp:include page="../menu_datos.jsp"/>
-           </c:if> 
-
-        <% if (valor_id != null) {%>
-        <jsp:include page="../titulo.jsp"/>
-        <jsp:include page="../menu_datos.jsp"/>
-        <% }%>
-        --%>
-
         <div class="estilo-caja principal">
 
             <div class="div-form-crear-partido">
@@ -68,7 +39,7 @@
                                 <option value=${id}>${id}</option>
                             </c:forEach>
                         </select>
-                        <input type="hidden" name="crear" value="buscar_objeto_pares"/>
+                        <input type="hidden" name="id_pares" value="buscar_objeto_pares"/>
                         <button class="estilo-boton" type="submit" name="btn_buscar">Buscar</button>
                     </form>
                 </div>
@@ -78,56 +49,90 @@
 
                     <div class="div-buscarId-jugador">
                         <label for="cbo_jugador1">Jugador1 :</label>
-                        <select name="cbo_jugador1">
-                            <%
-                                if (obj_pares != null) {
-                                    int idj1 = ((Pares) obj_pares).getIdJ1();
-                                    String nj1 = ((Pares) obj_pares).getNombreJ1();
-                            %>
-                            <option value="<%=idj1%>"><%=idj1 + " - " + nj1%></option>           
-                            <% } else { %>
-                            <option value=" --- "> --- </option>
-                               <% for (Objetos jug : lista_jugadores) {
-                                    int idj = ((Jugador) jug).getId();
-                                    String nombre = ((Jugador) jug).getNombre();%>
-                            <option value="<%=idj%>"><%=idj + " - " + nombre%></option>  
-                            <% }
-
-                                }%>
+                        
+                        <form action="ServletCrear" method="get">
+                        
+                            <select id="select_j1" onchange="actualizar('select_j1')" name="cbo_jugador1">
+                            <c:set var="pares" value="${obj_pares}"/>
+                            <c:if test="${pares != null}">
+                                <option value=${pares.idJ1}>${pares.idJ1} - ${pares.nombreJ1}</option>
+                            </c:if>
+                            <c:if test="${pares == null}">
+                                <option value=" --- "> --- </option>
+                                <c:forEach var="ju" items="${lista_jugadores}">
+                                    <option value=${ju.id}>${ju.id} - ${ju.nombre}</option>  
+                                </c:forEach>
+                            </c:if>
                         </select>
+                            
+                        </form>
                     </div>
 
                     <div class="div-buscarId-jugador">
                         <label for="cbo_jugador2">Jugador2 :</label>
-                        <select name="cbo_jugador2">
-                            <c:set var="objeto" value="${obj_pares}"/>
-                            <c:if test="${objeto != null}">
-                                <%-- <option value=${pares.id_j2}>${pares.id_j2 +" - "+ pares.nombre_j2}</option> --%>
+                        <select id="select_j2" name="cbo_jugador2">
+                            <c:set var="pares" value="${obj_pares}"/>
+                            <c:if test="${pares != null}">
+                                <option value=${pares.idJ2}>${pares.idJ2} - ${pares.nombreJ2}</option>
                             </c:if>
-                            <c:if test="${obj_pares == null}">
+                            <c:if test="${pares == null}">
                                 <option value=" --- "> --- </option>
-                                <c:forEach var="ju" items="<%=lista_jugadores%>">
-                             <%--    <option value=${ju.getId}>${ju.getId +" - "+ ju.getNombre}</option>  --%> 
+                                <c:forEach var="ju" items="${lista_jugadores}">
+                                    <option value=${ju.id}>${ju.id} - ${ju.nombre}</option>  
                                 </c:forEach>
                             </c:if>
                         </select>
                     </div>
 
                     <div class="div-buscarId-jugador">
-                        <label for="cbo_paga1">Paga j1 :</label>
-                        <select name="cbo_paga1">
-                            <c:forEach var="id" items="${lista_id}"> 
-                                <option value=${id}>${id}</option>
-                            </c:forEach> 
+                        <label>Paga j1 :</label>
+                        <select name="cbo_paga1"> 
+                            <c:set var="bonosj1" value="${bonosj1}"/>
+                            <%--  <c:set var="nombre_select" value="${nombre_select}"/> --%>
+                            <%-- <c:if test="${bonosj1 != null && nombre_select == 'select_j1'}"> --%>
+                           <c:if test="${bonosj1 != null}">
+                                <c:forEach var="bono" items="${bonosj1}"> 
+                                    <option value=${bono.id}>id:${bono.id} - Horas:${bono.horas}</option>
+                                </c:forEach> 
+                                <div>
+                                    <label>Horas</label>
+                                    <select name="cbo_horas_p1">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </div>
+                            </c:if> 
+                            <%--  <c:if test="${bonosj1 == null || nombre_select != 'select_j1'}"> --%>
+                            <c:if test="${bonosj1 == null}">
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </c:if>
                         </select>
                     </div>
 
                     <div class="div-buscarId-jugador">
-                        <label for="cbo_paga2">Paga j2:</label>
-                        <select name="cbo_paga2">
-                            <c:forEach var="id" items="${lista_id}"> 
-                                <option value=${id}>${id}</option>
-                            </c:forEach> 
+                        <label>Paga j2 :</label>
+                        <select name="cbo_paga2">  
+                            <c:set var="bonosj2" value="${bonosj2}"/>
+                            <%--  <c:set var="nombre_select" value="${nombre_select}"/> --%>
+                            <%--  <c:if test="${bonosj2 != null && nombre_select == 'select_j2'}"> --%>
+                            <c:if test="${bonosj2 != null}">
+                                <c:forEach var="bono" items="${bonosj2}"> 
+                                    <option value=${bono.id}>id: ${bono.id} - Horas: ${bono.horas}</option>
+                                </c:forEach> 
+                                <div>
+                                    <label>Horas</label>
+                                    <select name="cbo_horas_p1">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </div>
+                            </c:if>
+                            <%--  <c:if test="${bonosj2 == null || nombre_select != 'select_j2'}"> --%>
+                            <c:if test="${bonosj2 == null}">
+                                <option value="0">No</option>
+                                <option value="1">Si</option> 
+                            </c:if>
                         </select>
                     </div>
 
@@ -135,6 +140,27 @@
                 </form>
             </div>
         </div> 
+
+
+        <script>
+            function actualizar(nombre_select) {
+              let selection;
+                if (nombre_select === 'select_j1') {
+                    selection = document.getElementById("select_j1");
+                } else {
+                    selection = document.getElementById("select_j2");
+                }
+             let id_jugador = selection.options[selection.selectedIndex].value;
+             var xhr = new XMLHttpRequest();
+             xhr.open('GET', 'ServletCrear', false);
+             xhr.setRequestHeader('id_jugador', id_jugador);
+             xhr.setRequestHeader("nombre_select", nombre_select);
+             xhr.send();
+            }
+        </script> 
+       
+     
+        
 
         <jsp:include page="../pie_pagina.jsp"/>
     </body>

@@ -7,31 +7,31 @@ import java.util.List;
 
 public class Bono extends Objetos {
     
-    private int id_bono;
+    private int idBono;
     private LocalDate fecha;
     private String nombre;
-    private int id_jugador;
+    private int idJugador;
     private int horas;
     private boolean estado;
 
     public Bono(){}
     
     public Bono(int id_bono, LocalDate fecha, String nombre, int id_jugador, int horas, boolean estado) {
-        this.id_bono = id_bono;
+        this.idBono = id_bono;
         this.fecha = fecha;
         this.nombre = nombre;
-        this.id_jugador = id_jugador;
+        this.idJugador = id_jugador;
         this.horas = horas;
         this.estado = estado;
     }
 
     public Bono(int id_bono) {
-        this.id_bono = id_bono;
+        this.idBono = id_bono;
     }
 
     @Override
     public int getId() {
-        return id_bono;
+        return idBono;
     }
 
     public LocalDate getFecha() {
@@ -43,7 +43,7 @@ public class Bono extends Objetos {
     }
 
     public int getIdJugador() {
-        return id_jugador;
+        return idJugador;
     }
 
     public int getHoras() {
@@ -55,7 +55,7 @@ public class Bono extends Objetos {
     }
 
     public void setIdBono(int id_bono) {
-        this.id_bono = id_bono;
+        this.idBono = id_bono;
     }
 
     public void setFecha(LocalDate fecha) {
@@ -67,7 +67,7 @@ public class Bono extends Objetos {
     }
 
     public void setIdJugador(int id_jugador) {
-        this.id_jugador = id_jugador;
+        this.idJugador = id_jugador;
     }
 
     public void setHoras(int horas) {

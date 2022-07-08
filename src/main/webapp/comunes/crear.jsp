@@ -13,7 +13,9 @@
     </c:if>
     
     <c:if test="${param.nombre_etiqueta == 'Partido'}">
-        <jsp:include page=""/>
+        <jsp:forward page="/ServletCrear">
+          <jsp:param name="inicio" value="cargar_listas"/> 
+        </jsp:forward>
     </c:if>
     
 </div>
