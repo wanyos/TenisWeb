@@ -1,4 +1,5 @@
 modelo\Objetos.class
+datos\PartidoDao.class
 datos\AbstractDao.class
 datos\IDao.class
 datos\ParesDao.class

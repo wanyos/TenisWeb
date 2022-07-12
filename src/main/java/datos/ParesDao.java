@@ -14,7 +14,7 @@ public class ParesDao extends AbstractDao implements IDao {
     private final String insert_mysql = "insert into pares (jugador1, idj1, jugador2, idj2) values(?,?,?,?)";
     private final String get_mysql_id = "select * from pares where id=?";
     private final String delete_mysql = "delete from pares where id=?";
-    
+    private final String get_pares_id = "select * from pares where idj1=? and idj2=?";
     
     public ParesDao(){}
     
@@ -136,6 +136,33 @@ public class ParesDao extends AbstractDao implements IDao {
 
         } catch (SQLException e) {
             setMensajeError(e.getMessage());
+        } finally {
+            super.cerrarObjetos();
+        }
+        return p;
+    }
+    
+    public Objetos getParesIdJu(int idj1, int dij2){
+        Objetos p = null;
+        
+        try {
+            cx = super.getConexion();
+            ps = cx.prepareStatement(get_pares_id);
+            ps.setInt(1, idj1);
+            ps.setInt(2, dij2);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                int idp = rs.getInt("id");
+                String j1 = rs.getString("jugador1");
+                int id_j1 = rs.getInt("idj1");
+                String j2 = rs.getString("jugador2");
+                int id_j2 = rs.getInt("idj2");
+                p = new Pares(idp, j1, id_j1, j2, id_j2);
+            }
+            
+        } catch(SQLException ex){
+            setMensajeError(ex.getMessage());
         } finally {
             super.cerrarObjetos();
         }

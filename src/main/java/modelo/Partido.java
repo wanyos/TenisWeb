@@ -9,9 +9,22 @@ public class Partido extends Objetos {
     
     private int id_partido;
     private LocalDate fecha;
-    private int id_pares, pagaj1, pagaj2;
+    private int id_pares;
+    private String jugador1, jugador2;
+    private int pagaj1, pagaj2;
+    
 
     public Partido(){}
+    
+     public Partido(int id, LocalDate fecha, int id_pares, String jugador1, String jugador2, int pagaj1, int pagaj2) {
+        this.id_partido = id;
+        this.fecha = fecha;
+        this.id_pares = id_pares;
+        this.jugador1 = jugador1;
+        this.jugador2 = jugador2;
+        this.pagaj1 = pagaj1;
+        this.pagaj2 = pagaj2;
+    }
     
     public Partido(int id_partido, LocalDate fecha, int id_pares, int pagaj1, int pagaj2) {
         this.id_partido = id_partido;
@@ -27,6 +40,7 @@ public class Partido extends Objetos {
         this.pagaj1 = pagaj1;
         this.pagaj2 = pagaj2;
     }
+ 
 
     public Partido(int id_partido) {
         this.id_partido = id_partido;
@@ -53,6 +67,23 @@ public class Partido extends Objetos {
         return pagaj2;
     }
 
+    public String getJugador1() {
+        return jugador1;
+    }
+
+    public void setJugador1(String jugador1) {
+        this.jugador1 = jugador1;
+    }
+
+    public String getJugador2() {
+        return jugador2;
+    }
+
+    public void setJugador2(String jugador2) {
+        this.jugador2 = jugador2;
+    }
+    
+    
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
@@ -68,6 +99,8 @@ public class Partido extends Objetos {
     public void setPagaj2(int pagaj2) {
         this.pagaj2 = pagaj2;
     }
+    
+   
     
     
     @Override

@@ -4,7 +4,6 @@ package servlet_seccion;
 import datos.*;
 import modelo.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,43 +23,33 @@ public class ServletCrear extends HttpServlet {
     private List<String> mensaje;
     private List<Integer> lista_id_pares;
     private List<Objetos> lista_jugadores;
-    private List<Bono> lista_bonos_j1, lista_bonos_j2;
     private Objetos obj_pares;
+    private Bono bono_actualizar;
     
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       
-        String id_jugador = request.getHeader("id_jugador");
+        List<Bono> lista_bonos_j1 = null, lista_bonos_j2 = null;
+        String id_jugador = request.getParameter("id_jugador");
         if (id_jugador != null) {
             //obtener los bonos del jugador seleccionado
-            String nombre_select = request.getHeader("nombre_select");
-            int idj = Integer.parseInt(id_jugador);
+            String nombre_select = request.getParameter("nombre_select");
+            String id_otro_jugador = request.getParameter("id_otro_jugador");
+            Jugador ju1, ju2;
+            
             if (nombre_select.equals("select_j1")) {
-                lista_bonos_j1 = this.getListaBonos(idj);
-                request.setAttribute("bonosj1", lista_bonos_j1);
+                ju1 = this.getJugador(id_jugador);
+                ju2 = this.getJugador(id_otro_jugador);
             } else {
-                lista_bonos_j2 = this.getListaBonos(idj);
-                request.setAttribute("bonosj2", lista_bonos_j2);
+                ju2 = this.getJugador(id_jugador);
+                ju1 = this.getJugador(id_otro_jugador);
             }
-           //response.sendRedirect("comunes/crear/form_crear_partido.jsp");
-           
-//            response.setContentType("text/html; charset=utf-8" );
-//            PrintWriter out = response.getWriter();
-//            
-//            out.println("<select name='cbo_bonos_j1'>");
-//            if (lista_bonos_j1 != null) {
-//                for (Bono aux : lista_bonos_j1) {
-//                    out.println("<option>id: " + aux.getId() + " - " + "Horas: " + aux.getHoras() + "</option>");
-//                }
-//            }
-//            if (lista_bonos_j2 != null) {
-//                for (Bono aux : lista_bonos_j2) {
-//                    out.println("<option>id: " + aux.getId() + " - " + "Horas: " + aux.getHoras() + "</option>");
-//                }
-//            }
-//            out.println("</select>");
-//            out.close();
+            lista_bonos_j1 = this.getListaBonos(ju1, -1);
+            lista_bonos_j2 = this.getListaBonos(ju2, -1);
+             request.setAttribute("bonosj1", lista_bonos_j1);
+             request.setAttribute("bonosj2", lista_bonos_j2);
+             request.setAttribute("jugador1", ju1);  
+             request.setAttribute("jugador2", ju2);
         }
         
         String crear = request.getParameter("id_pares");
@@ -69,10 +58,14 @@ public class ServletCrear extends HttpServlet {
             obj_pares = null;
             if (valorCorrecto(valor)) {
                 obj_pares = getObjetoId(valor);
-                
+                Pares p = (Pares) obj_pares;
+                lista_bonos_j1 = this.getListaBonos(null, p.getIdJ1());
+                lista_bonos_j2 = this.getListaBonos(null, p.getIdJ2());
             }
+            request.setAttribute("bonosj1", lista_bonos_j1);
+            request.setAttribute("bonosj2", lista_bonos_j2);
             request.setAttribute("obj_pares", obj_pares);
-        } 
+        }
         
         String inicio = request.getParameter("inicio");
          if(inicio != null && inicio.equals("cargar_listas")){
@@ -118,15 +111,30 @@ public class ServletCrear extends HttpServlet {
         return obj;
     }
     
-    private List<Bono> getListaBonos(int idj){
-        List<Bono> lista_bonos;
+    private Objetos getObjetoPares(String idj1, String idj2) {
+        Objetos obj;
+        int id_j1 = Integer.parseInt(idj1);
+        int id_j2 = Integer.parseInt(idj2);
+        ParesDao pares = new ParesDao();
+        obj = pares.getParesIdJu(id_j1, id_j2);
+        return obj;
+    }
+
+    private List<Bono> getListaBonos(Jugador j, int idj) {
+        List<Bono> lista_bonos = null;
         BonoDao bDao = new BonoDao();
-        lista_bonos = bDao.select(idj);
-        if(lista_bonos.isEmpty()){
-            return null;
+        if (j != null) {   
+           lista_bonos = bDao.select(j.getId());
+        } else if(j == null && idj > -1){
+            lista_bonos = bDao.select(idj);
         }
+        if (lista_bonos == null || lista_bonos.isEmpty()) {
+                return null;
+            }
         return lista_bonos;
     }
+    
+
     
 
     @Override
@@ -152,7 +160,7 @@ public class ServletCrear extends HttpServlet {
         String apellido = request.getParameter("txt_apellido");
         String comentario = request.getParameter("txt_comentario");
 
-        Jugador j = new Jugador(nombre, apellido, comentario);
+        Objetos j = new Jugador(nombre, apellido, comentario);
         IDao interfaceDao = new JugadorDao();
         crearObjeto(request, response, interfaceDao, j);
     }
@@ -175,7 +183,7 @@ public class ServletCrear extends HttpServlet {
             es = true;
         }
 
-        Bono b = new Bono(idb, f, nombre, idj, h, es);
+        Objetos b = new Bono(idb, f, nombre, idj, h, es);
         IDao interfaceDao = new BonoDao();
         crearObjeto(request, response, interfaceDao, b);
     }
@@ -183,19 +191,30 @@ public class ServletCrear extends HttpServlet {
     private void crearPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //fecha = txt_fecha, jugador1 = cbo_jugador1, jugador2 = cbo_jugador, paga1 = cbo_paga1, paga2 = cbo_paga2
         String fecha = request.getParameter("txt_fecha");
-        String idj1 = request.getParameter("cbo_jugador1").trim();
-        String idj2 = request.getParameter("cbo_jugador2").trim();
-        String paga1 = request.getParameter("cbo_paga1").trim();
-        String paga2 = request.getParameter("cbo_paga2").trim();
+        String idj1 = request.getParameter("cbo_jugador1");
+        String idj2 = request.getParameter("cbo_jugador2");
+        String paga1 = request.getParameter("cbo_paga1");
+        String paga2 = request.getParameter("cbo_paga2");
+        String horas_p1 = request.getParameter("cbo_horas_p1");
+        String horas_p2 = request.getParameter("cbo_horas_p2");
         
         //si no existen los pares hay que crearlos, si al crearlos ya existen devolvera error, obtener los pares 
         if(obj_pares == null){
-           crearPares(idj1, idj2); 
+          int v = crearPares(idj1, idj2); 
+          if(v == 0){
+              obj_pares = getObjetoPares(idj1, idj2);
+          }
         }
         LocalDate f = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        int id_pares = obj_pares.getId();
+        int paga_j1 = gestionPago(paga1, horas_p1);
+        int paga_j2 = gestionPago(paga2, horas_p2);
         
-        
-         
+        if(paga_j1 > 0 || paga_j2 > 0){
+            Objetos p = new Partido(f, id_pares, paga_j1, paga_j2);
+            IDao interfaceDao = new PartidoDao();
+            crearObjeto(request, response, interfaceDao, p);
+        }
     }
     
    
@@ -207,6 +226,8 @@ public class ServletCrear extends HttpServlet {
             crearMensajeError(obj);
             mensaje.add(interfaceDao.getMensajeError());
         } else {
+            //si se ha creado un partido hay que comprobar si hay bono que actualizar
+            actualizarBono();
             crearMensajeCorrecto(obj);
         }
         request.setAttribute("mensaje", mensaje);
@@ -219,7 +240,7 @@ public class ServletCrear extends HttpServlet {
         } else if (obj instanceof Bono) {
             mensaje.add(" El bono nombre: " + ((Bono) obj).getNombre() + " - id_bono: " + obj.getId() + " no ha sido creado...");
         } else if (obj instanceof Partido) {
-
+           mensaje.add(" El partido Fecha: " + ((Partido) obj).getFecha() + " - id_pares: " + ((Partido) obj).getIdPares() + " no ha sido creado...");
         } 
     }
 
@@ -229,24 +250,29 @@ public class ServletCrear extends HttpServlet {
         } else if (obj instanceof Bono) {
             mensaje.add(" El bono nombre: " + ((Bono) obj).getNombre() + " - id_bono: " + obj.getId() + " ha sido creado...");
         } else if (obj instanceof Partido) {
-
+           mensaje.add(" El partido id: " + ((Partido) obj).getId() + " - id_pares: " + ((Partido) obj).getIdPares() + " ha sido creado...");
         } 
     }
     
     
-    private void crearPares(String id_j1, String id_j2){
+    private int crearPares(String id_j1, String id_j2){
+        int v;
         Jugador j1 = getJugador(id_j1);
         Jugador j2 = getJugador(id_j2);
         
         Pares p = new Pares(j1.getNombre(), j1.getId(), j2.getNombre(), j2.getId());
         IDao interfaceDao = new ParesDao();
-        interfaceDao.crear(p);
-        obj_pares = p; 
+        v = interfaceDao.crear(p);
+        obj_pares = p;
+        return v;
     }
     
      private Jugador getJugador(String id){
         Jugador ju = null;
-        int idj1 = Integer.parseInt(id);
+        int idj1 = -1;
+        if(id != null && valorCorrecto(id)){
+           idj1 = Integer.parseInt(id);    
+        }
         IDao interfaceDao = new JugadorDao();
         ju = (Jugador) interfaceDao.getObjeto(idj1);
         return ju;
@@ -258,5 +284,38 @@ public class ServletCrear extends HttpServlet {
         Matcher mat = pat.matcher(v);
         return mat.matches();
     }
+     
+     
+     private int gestionPago(String pago, String horas){
+         int v = 0;
+         int h = Integer.parseInt(horas);
+         if(valorCorrecto(pago)){
+             //hay que descontar las horas del bono
+             int id_bono = Integer.parseInt(pago);
+             prepararBono(id_bono, h);
+             return h;
+         } else if(pago.equals("si")){
+             return h;
+         }
+         return v;
+     }
+     
+     
+    private void prepararBono(int id_bono, int horas) {
+        IDao interfaceDao = new BonoDao();
+        Objetos b = interfaceDao.getObjeto(id_bono);
+        bono_actualizar = (Bono) b;
+        int horas_bono = bono_actualizar.getHoras();
+        bono_actualizar.setHoras(horas_bono - horas);
+    }
+    
+    private void actualizarBono() {
+        if (bono_actualizar != null) {
+            //actualziar el bono
+            IDao interfaceDao = new BonoDao();
+            interfaceDao.editar(bono_actualizar);
+        }
+    }
+   
 
 }

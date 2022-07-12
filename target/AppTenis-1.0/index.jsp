@@ -9,7 +9,7 @@
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>App tenis</title>
-        <link rel="stylesheet" href="css/estilo.css?1.0" media="all"/>
+        <link rel="stylesheet" href="css/estilo.css"/>
         <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet"/> 
         <%--<link rel="stylesheet" href="css/listar.css/">--%> 
         <%--<link rel="stylesheet" href="css/crear.css">--%>

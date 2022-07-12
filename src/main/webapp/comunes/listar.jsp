@@ -44,6 +44,8 @@
                         <td>${partido.getId()}</td>
                         <td>${partido.fecha}</td>
                         <td>${partido.getIdPares()}</td>
+                        <td>${partido.getJugador1()}</td>
+                        <td>${partido.getJugador2()}</td>
                         <td>${partido.getPagaj1()}</td>
                         <td>${partido.getPagaj2()}</td>
                     </tr>

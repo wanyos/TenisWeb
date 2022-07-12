@@ -6,6 +6,7 @@ import datos.AbstractDao;
 import datos.BonoDao;
 import datos.IDao;
 import datos.JugadorDao;
+import datos.PartidoDao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,6 @@ public class ServletControlador extends HttpServlet {
             case "listar":
                 List<String> colum = getColumnas(nombre_etiqueta);
                 List<Objetos> datos = getListaDatos(nombre_etiqueta);
-
                 request.setAttribute("opcion", "listar");
                 request.setAttribute("columnas", colum);
                 request.setAttribute("datos", datos);
@@ -94,7 +94,7 @@ public class ServletControlador extends HttpServlet {
         } else if (nombre.equalsIgnoreCase("bono")) {
             interfaceDao = new BonoDao();
         } else if (nombre.equalsIgnoreCase("partido")) {
-            //interfaceDao = new PartidoDao();
+            interfaceDao = new PartidoDao();
         }
          if(interfaceDao != null){
              lista = interfaceDao.select();
@@ -118,12 +118,11 @@ public class ServletControlador extends HttpServlet {
         } else if (nombre.equalsIgnoreCase("bono")) {
             ab = new BonoDao();
         } else if (nombre.equalsIgnoreCase("partido")) {
-            //ab = new PartidoDao();
+            ab = new PartidoDao();
         }
          if(ab != null){
              lista = ab.getListaId();
          }
-        
         return lista;
     }
     

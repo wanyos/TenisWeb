@@ -188,11 +188,12 @@ footer{
     width: 80%;
     margin-top: 1em;
     margin-left: 3em;
-    display: flex;
+    padding: 10px;
+    font-size: 18px;
 }
 
-.div-buscarId-jugador select{
-    margin-left: 10px;
+.div-buscarId-jugador select,
+.aspecto-select{
     text-align: center;
     font-family: 'Inconsolata', monospace;
     color: var(--color-fuente);
@@ -200,10 +201,26 @@ footer{
     font-size: 15px;
 }
 
-.div-buscarId-jugador select option{
+.div-buscarId-jugador select option,
+.aspecto-select-option{
     color: var(--color-fuente);
     background-color: var(--color-fondo);
 }
+
+.div-select-jugador,
+.div-paga-jugador{
+    padding: 10px;
+}
+
+
+.ancho-select{
+   min-width: 10rem;
+}
+
+.alinear-bloque{
+  display: inline-block;
+}
+
 
 
 
