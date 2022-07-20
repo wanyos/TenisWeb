@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -10,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Menu general</title>
         <%--<link rel="stylesheet" href="css/estilo-crear-jugador.css/crear.css">--%>
-        <link rel="stylesheet" href="css/estilo.css"/>
+        <link rel="stylesheet" href="css/estilo.css?<%= LocalDate.now() %>"/>           <!-- Se pone fecha para obtener los cambios del css -->
         <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet"/> 
     </head>
     <body>

@@ -1,16 +1,17 @@
 
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Alerta</title>
-        <link rel="stylesheet" href="css/estilo.css?1.0" media="all"/>
+        <link rel="stylesheet" href="css/estilo.css?<%= LocalDate.now() %>" media="all"/>
         <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet"/> 
     </head>
 
     <body>
         <div class="estilo-caja principal">
-            <div class="div-form-crear">
+            <div class="div-caja-form">
                 <h3>!!! Resultado de la operación...</h3>
                 </br></br>
                     <%List<String> m = (List) request.getAttribute("mensaje");

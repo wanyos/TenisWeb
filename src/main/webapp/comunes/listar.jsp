@@ -48,6 +48,8 @@
                         <td>${partido.getJugador2()}</td>
                         <td>${partido.getPagaj1()}</td>
                         <td>${partido.getPagaj2()}</td>
+                        <td>${partido.getIdBono1()}</td>
+                        <td>${partido.getIdBono2()}</td>
                     </tr>
                 </c:forEach>
             </c:if>

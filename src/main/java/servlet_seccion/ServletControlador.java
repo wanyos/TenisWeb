@@ -37,14 +37,18 @@ public class ServletControlador extends HttpServlet {
                 request.setAttribute("opcion", "crear");
                 break;
             case "editar":
+                if(!nombre_etiqueta.equals("Partido")){
+                  lista_id = getListaId(nombre_etiqueta);   
+                  request.setAttribute("lista_id", lista_id);    
+                }
                 request.setAttribute("opcion", "editar");
-                lista_id = getListaId(nombre_etiqueta);
-                request.setAttribute("lista_id", lista_id);
                 break;
             case "eliminar":
-                request.setAttribute("opcion", "eliminar");
-                lista_id = getListaId(nombre_etiqueta);
-                request.setAttribute("lista_id", lista_id);
+                if(!nombre_etiqueta.equals("Partido")){
+                    lista_id = getListaId(nombre_etiqueta);
+                    request.setAttribute("lista_id", lista_id);     
+                }
+                 request.setAttribute("opcion", "eliminar");
                 break;
        }
        request.getRequestDispatcher("generico.jsp").forward(request, response);
@@ -66,11 +70,11 @@ public class ServletControlador extends HttpServlet {
     private List<String> getColumnas(String nombre) {
         List<String> lista = new ArrayList<>();
         Objetos obj = null;
-        if (nombre.equalsIgnoreCase("jugador")) {
+        if (nombre.equalsIgnoreCase("Jugador")) {
             obj = new Jugador();
-        } else if (nombre.equalsIgnoreCase("bono")) {
+        } else if (nombre.equalsIgnoreCase("Bono")) {
             obj = new Bono();
-        } else if (nombre.equalsIgnoreCase("partido")) {
+        } else if (nombre.equalsIgnoreCase("Partido")) {
             obj = new Partido();
         }
         if (obj != null) {

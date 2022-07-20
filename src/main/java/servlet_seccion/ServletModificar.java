@@ -20,22 +20,31 @@ public class ServletModificar extends HttpServlet {
      private String id_select ;
      private List<String> mensaje;
    
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //se usa todo para el resto de objetos, solo necesita el objeto a mostrar
         id_select = request.getParameter("cbo_id");
-        String nombre_etiqueta = request.getParameter("nombre_etiqueta");
-        String opcion = request.getParameter("opcion");
-        Objetos obj = getObjeto(nombre_etiqueta, id_select);
-        String l = request.getParameter("lista_id");
-        String aux = l.substring(1, l.length()-1);
-        String [] lis = aux.split(",");
-        List<String> lista_id = Arrays.asList(lis);
+        String nombre_etiqueta = request.getParameter("nombre_etiqueta").toLowerCase();
+        String opcion, l, aux;
+        List<String> lista_id;
+        Objetos obj;
         
+        if (nombre_etiqueta.equals("partido")) {
+            id_select = request.getParameter("txt_id_partido");
+        } else {
+            l = request.getParameter("lista_id");
+            aux = l.substring(1, l.length() - 1);
+            String[] lis = aux.split(",");
+            lista_id = Arrays.asList(lis);
+            request.setAttribute("lista_id", lista_id);
+        }
+        obj = getObjeto(nombre_etiqueta, id_select);
+        opcion = request.getParameter("opcion");
         request.setAttribute("objeto", obj);
         request.setAttribute("opcion", opcion);
-        request.setAttribute("lista_id", lista_id);
+        if(obj == null){
+            request.setAttribute("mensaje", "!!!El objeto es nulo o vacio...");
+        }
         request.getRequestDispatcher("generico.jsp").forward(request, response);
     }
 
@@ -58,12 +67,11 @@ public class ServletModificar extends HttpServlet {
                  eliminarBono(request, response);
              }
            
-            
         } else if(nombre_etiqueta.equalsIgnoreCase("Partido")){
              if(opcion.equalsIgnoreCase("editar")){
                 //editarPartido(request, response);
              } else {
-                 //eliminarPartido(request, response);
+                 eliminarPartido(request, response);
              }
         }
     }
@@ -75,21 +83,24 @@ public class ServletModificar extends HttpServlet {
         int id;
 
         switch (nombre) {
-            case "Jugador":
+            case "jugador":
                 interfaceDao = new JugadorDao();
                 break;
-            case "Bono":
+            case "bono":
                 interfaceDao = new BonoDao();
                 break;
-            case "Partdio":
-
+            case "partido":
+                interfaceDao = new PartidoDao();
                 break;
         }
-        if(interfaceDao != null){
-             id = Integer.parseInt(select);
-             obj = interfaceDao.getObjeto(id);
+        if (interfaceDao != null) {
+            try {
+                id = Integer.parseInt(select);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+            obj = interfaceDao.getObjeto(id);
         }
-
         return obj;
     }
     
@@ -109,8 +120,8 @@ public class ServletModificar extends HttpServlet {
     
     private void eliminarJugador(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(id_select);
-        Jugador j = new Jugador(id);
         IDao interfaceDao = new JugadorDao();
+        Objetos j = interfaceDao.getObjeto(id);
         eliminarObjeto(request, response, interfaceDao, j);
     }
     
@@ -136,18 +147,20 @@ public class ServletModificar extends HttpServlet {
     
      private void eliminarBono(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          int id = Integer.parseInt(id_select);
-         Bono b = new Bono(id);
-         IDao interfaceDao = new BonoDao();
+         IDao interfaceDao = new BonoDao(); 
+         Objetos b = interfaceDao.getObjeto(id);
          eliminarObjeto(request, response, interfaceDao, b);
      }
      
-//     private void editarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//         
-//     }
+     private void editarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+     }
     
- //    private void eliminarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//         
-//     }
+     private void eliminarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         int id = Integer.parseInt(id_select);
+         IDao interfaceDao = new PartidoDao();
+         Objetos p = interfaceDao.getObjeto(id);
+         eliminarObjeto(request, response, interfaceDao, p);
+     }
      
      
      private void editarObjeto (HttpServletRequest request, HttpServletResponse response, IDao interfaceDao, Objetos obj) throws ServletException, IOException {
@@ -170,7 +183,7 @@ public class ServletModificar extends HttpServlet {
          } else if(obj instanceof Bono){
               mensaje.add(" El bono " + ((Bono) obj).getNombre() + " " + obj.getId() + " no ha sido editado...");
          } else if(obj instanceof Partido){
-             
+             mensaje.add(" El partido " + ((Partido) obj).getId() + " " + ((Partido) obj).getFecha() + " no ha sido editado...");
          }
      }
      
@@ -180,7 +193,7 @@ public class ServletModificar extends HttpServlet {
          } else if(obj instanceof Bono){
               mensaje.add(" El bono " + ((Bono) obj).getNombre() + " " + obj.getId() + " ha sido editado");
          } else if(obj instanceof Partido){
-             
+              mensaje.add(" El partido " + ((Partido) obj).getId() + " " + ((Partido) obj).getFecha() + " ha sido editado");
          }
      }
      
@@ -193,11 +206,39 @@ public class ServletModificar extends HttpServlet {
            mensaje.add(" El objeto no ha sido eliminado...");
            mensaje.add(interfaceDao.getMensajeError());
         } else {
+            if(obj instanceof Partido){
+                //actualizar bonos si hubiera devolviendo las horas
+                actualizarBono(obj);
+            }
             mensaje.add(" El objeto ha sido eliminado...");
         }
          request.setAttribute("mensaje", mensaje);
          request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
      }
+     
+     
+    private void actualizarBono(Objetos obj) {
+        IDao interfaceDao = new BonoDao();
+        Partido p = (Partido) obj;
+        int paga1 = p.getPagaj1();
+        int idb1 = p.getIdBono1();
+        int paga2 = p.getPagaj2();
+        int idb2 = p.getIdBono2();
+        Bono b;
+
+        if (paga1 > 0 && idb1 > 0) {
+            b = (Bono) interfaceDao.getObjeto(idb1);
+            int horas = b.getHoras();
+            b.setHoras(horas + paga1);
+            interfaceDao.editar(b);
+        }
+        if (paga2 > 0 && idb2 > 0) {
+            b = (Bono) interfaceDao.getObjeto(idb2);
+            int horas = b.getHoras();
+            b.setHoras(horas + paga2);
+            interfaceDao.editar(b);
+        }
+    }
      
 
 }

@@ -12,13 +12,13 @@ import modelo.Partido;
 
 public class PartidoDao extends AbstractDao implements IDao {
 
-    private final String mysql_insert = "insert into partido(fecha, id_pares, pagaj1, pagaj2) values (?,?,?,?)";
-    //private final String mysql_select = "select * from partido";
-    private final String mysql_select = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2"
+    private final String mysql_insert = "insert into partido(fecha, id_pares, pagaj1, pagaj2, id_bono1, id_bono2) values (?,?,?,?,?,?)";
+    private final String mysql_select = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2"
                                         + " from partido inner join pares on partido.id_pares=pares.id";
-    private final String mysql_update = "update from partido set fecha=?, id_pares=?, pagaj1=?, pagaj2=? where iod=?)";
+    private final String mysql_update = "update from partido set fecha=?, id_pares=?, pagaj1=?, pagaj2=?, id_bono1=?, id_bono2=? where id=?)";
     private final String mysql_delete = "delete from partido where id=?";
-    private final String mysql_get_obj = "select * from partido where id=?";
+    private final String mysql_get_obj = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+                                        + "from partido inner join pares on partido.id_pares=pares.id where partido.id=?;";
     private String mensaje_error;
     
     public PartidoDao(){}
@@ -63,7 +63,9 @@ public class PartidoDao extends AbstractDao implements IDao {
                 String jugador2 = rs.getString("pares.jugador2");
                 int paga1 = rs.getInt("partido.pagaj1");
                 int paga2 = rs.getInt("partido.pagaj2");
-                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2);
+                int id_bono1 = rs.getInt("partido.id_bono1");
+                int id_bono2 = rs.getInt("partido.id_bono2");
+                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2);
                 lista.add(p);
             }
         } catch (SQLException e) {
@@ -86,6 +88,8 @@ public class PartidoDao extends AbstractDao implements IDao {
             ps.setInt(2, p.getIdPares());
             ps.setInt(3, p.getPagaj1());
             ps.setInt(4, p.getPagaj2());
+            ps.setInt(5, p.getIdBono1());
+            ps.setInt(6, p.getIdBono2());
             v = ps.executeUpdate();
         } catch(SQLException e){
             this.setMensajeError(e.getMessage());
@@ -107,7 +111,9 @@ public class PartidoDao extends AbstractDao implements IDao {
             ps.setInt(2, p.getIdPares());
             ps.setInt(3, p.getPagaj1());
             ps.setInt(4, p.getPagaj2());
-            ps.setInt(5, p.getId());
+            ps.setInt(5, p.getIdBono1());
+            ps.setInt(6, p.getIdBono2());
+            ps.setInt(7, p.getId());
             v = ps.executeUpdate();
         } catch(SQLException e){
             this.setMensajeError(e.getMessage());
@@ -145,12 +151,16 @@ public class PartidoDao extends AbstractDao implements IDao {
            rs = ps.executeQuery();
            
            if(rs.next()){
-               int idp = rs.getInt("id");
-               LocalDate fecha = rs.getDate("fecha").toLocalDate();
-                int id_pares = rs.getInt("id_pares");
-                int paga1 = rs.getInt("pagaj1");
-                int paga2 = rs.getInt("pagaj2");
-                p = new Partido(idp, fecha, id_pares, paga1, paga2);
+                int idp = rs.getInt("partido.id");
+                LocalDate fecha = rs.getDate("partido.fecha").toLocalDate();
+                int id_pares = rs.getInt("partido.id_pares");
+                String jugador1 = rs.getString("pares.jugador1");
+                String jugador2 = rs.getString("pares.jugador2");
+                int paga1 = rs.getInt("partido.pagaj1");
+                int paga2 = rs.getInt("partido.pagaj2");
+                int id_bono1 = rs.getInt("partido.id_bono1");
+                int id_bono2 = rs.getInt("partido.id_bono2");
+                p = new Partido(idp, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2);
            }
        } catch(SQLException e){
            this.setMensajeError(e.getMessage());

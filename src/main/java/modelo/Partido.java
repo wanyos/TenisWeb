@@ -7,48 +7,54 @@ import java.util.List;
 
 public class Partido extends Objetos {
     
-    private int id_partido;
+    private int idPartido;
     private LocalDate fecha;
-    private int id_pares;
+    private int idPares;
     private String jugador1, jugador2;
     private int pagaj1, pagaj2;
-    
+    private int idBono1, idBono2;
 
     public Partido(){}
     
-     public Partido(int id, LocalDate fecha, int id_pares, String jugador1, String jugador2, int pagaj1, int pagaj2) {
-        this.id_partido = id;
+     public Partido(int id, LocalDate fecha, int id_pares, String jugador1, String jugador2, int pagaj1, int pagaj2, int id_bono1, int id_bono2) {
+        this.idPartido = id;
         this.fecha = fecha;
-        this.id_pares = id_pares;
+        this.idPares = id_pares;
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
         this.pagaj1 = pagaj1;
         this.pagaj2 = pagaj2;
+        this.idBono1 = id_bono1;
+        this.idBono2 = id_bono2;
     }
     
-    public Partido(int id_partido, LocalDate fecha, int id_pares, int pagaj1, int pagaj2) {
-        this.id_partido = id_partido;
+    public Partido(int id_partido, LocalDate fecha, int id_pares, int pagaj1, int pagaj2, int id_bono1, int id_bono2) {
+        this.idPartido = id_partido;
         this.fecha = fecha;
-        this.id_pares = id_pares;
+        this.idPares = id_pares;
         this.pagaj1 = pagaj1;
         this.pagaj2 = pagaj2;
+        this.idBono1 = id_bono1;
+        this.idBono2 = id_bono2;
     }
 
-    public Partido(LocalDate fecha, int id_pares, int pagaj1, int pagaj2) {
+    public Partido(LocalDate fecha, int id_pares, int pagaj1, int pagaj2, int id_bono1, int id_bono2) {
         this.fecha = fecha;
-        this.id_pares = id_pares;
+        this.idPares = id_pares;
         this.pagaj1 = pagaj1;
         this.pagaj2 = pagaj2;
+        this.idBono1 = id_bono1;
+        this.idBono2 = id_bono2;
     }
  
 
     public Partido(int id_partido) {
-        this.id_partido = id_partido;
+        this.idPartido = id_partido;
     }
 
     @Override
     public int getId() {
-        return id_partido;
+        return idPartido;
     }
 
     public LocalDate getFecha() {
@@ -56,7 +62,7 @@ public class Partido extends Objetos {
     }
 
     public int getIdPares() {
-        return id_pares;
+        return idPares;
     }
 
     public int getPagaj1() {
@@ -82,14 +88,29 @@ public class Partido extends Objetos {
     public void setJugador2(String jugador2) {
         this.jugador2 = jugador2;
     }
+
+    public int getIdBono1() {
+        return idBono1;
+    }
+
+    public void setIdBono1(int id_bono1) {
+        this.idBono1 = id_bono1;
+    }
     
+    public int getIdBono2() {
+        return idBono2;
+    }
+
+    public void setIdBono2(int id_bono2) {
+        this.idBono2 = id_bono2;
+    }
     
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
     public void setIdPares(int id_pares) {
-        this.id_pares = id_pares;
+        this.idPares = id_pares;
     }
 
     public void setPagaj1(int pagaj1) {
