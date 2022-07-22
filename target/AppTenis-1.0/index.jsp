@@ -16,11 +16,9 @@
         <%--<link rel="stylesheet" href="css/crear.css">--%>
     </head>
     <body>
-
         <jsp:include page="comunes/titulo.jsp"/>
         <jsp:include page="comunes/menu_principal.jsp"/>
         <jsp:include page="comunes/principal.jsp"/>
         <jsp:include page="comunes/pie_pagina.jsp"/>
-
     </body>
 </html>

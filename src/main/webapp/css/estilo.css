@@ -104,6 +104,12 @@ a:hover{
     background-size: cover;
 }
 
+.salir{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
 footer{
     position: absolute;
     bottom: 0;
@@ -150,7 +156,7 @@ footer{
 /* Caja principal para coger dentro formularios*/
 .div-caja-form{
     margin-top: 1em;
-    margin-left: 1em;
+    margin-left: 2em;
     padding: 10px;
 }
 
@@ -165,7 +171,6 @@ footer{
     margin-left: 1em;
     display: flex;
     flex-direction: column;
-    /*width: 50%;*/
 }
 
 /* Alinea los componentes dentro de un formulario en la parte de abajo */

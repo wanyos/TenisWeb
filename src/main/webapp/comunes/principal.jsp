@@ -17,6 +17,5 @@
                  <jsp:include page="editar-eliminar.jsp?nombre_etiqueta=${param.nombre_etiqueta}&${objeto}"/>
             </c:when>
         </c:choose>
-        
     </div>
 </main>

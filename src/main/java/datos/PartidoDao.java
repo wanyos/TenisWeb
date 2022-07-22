@@ -4,6 +4,7 @@ package datos;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Objetos;
@@ -169,6 +170,60 @@ public class PartidoDao extends AbstractDao implements IDao {
        }
        return p;
     }
+    
+    
+     public List<Objetos> getListaConsulta(String consulta, int idj, String fe) {
+        String consult = getConsulta(consulta, idj, fe);
+        List<Objetos> lista = new ArrayList<>();
+        try {
+            cx = super.getConexion();
+            ps = cx.prepareStatement(consult);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("partido.id");
+                LocalDate fecha = rs.getDate("partido.fecha").toLocalDate();
+                int id_pares = rs.getInt("partido.id_pares");
+                String jugador1 = rs.getString("pares.jugador1");
+                String jugador2 = rs.getString("pares.jugador2");
+                int paga1 = rs.getInt("partido.pagaj1");
+                int paga2 = rs.getInt("partido.pagaj2");
+                int id_bono1 = rs.getInt("partido.id_bono1");
+                int id_bono2 = rs.getInt("partido.id_bono2");
+                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2);
+                lista.add(p);
+            }
+        } catch (SQLException e) {
+            this.setMensajeError(e.getMessage());
+        } finally {
+            super.cerrarObjetos();
+        }
+        return lista;
+    }
+     
+     private String getConsulta(String con, int id, String fecha){
+         String f = '\u0022'+""+fecha+""+'\u0022';
+         String fecha_ahora = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+         String fecha_actual = '\u0022'+""+fecha_ahora+""+'\u0022';
+        switch (con) {
+            case "mysql_id_fecha":
+            String mysql_id_fecha = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+                                  + "from partido inner join pares on partido.id_pares=pares.id where (pares.idj1="+id+" or pares.idj2="+id+") and "
+                                  + "(partido.fecha between "+f+" and "+fecha_actual+");";
+            return mysql_id_fecha;
+            case "mysql_id":
+            String mysql_id = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+                            + "from partido inner join pares on partido.id_pares=pares.id where pares.idj1="+id+" or pares.idj2="+id+";";
+            return mysql_id;
+            case "mysql_fecha":
+            String mysql_fecha = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+                               + "from partido inner join pares on partido.id_pares=pares.id where partido.fecha between"+f+" and "+fecha_actual+";";
+            return mysql_fecha;
+            default:
+                break;
+        }
+         return "";
+     }
 
    
     
