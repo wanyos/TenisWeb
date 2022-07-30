@@ -15,6 +15,7 @@ public class JugadorDao extends AbstractDao implements IDao {
     private final String update_mysql = "update jugador set nombre=?, apellido=?, comentario=? where id=?";
     private final String delete_mysql = "delete from jugador where id=?";
     private final String get_mysql_id = "select * from jugador where id=?";
+    private final String get_jugador_nombre_apellido = "select * from jugador where nombre=? and apellido=?";
     private String mensaje_error;
     
     
@@ -154,19 +155,29 @@ public class JugadorDao extends AbstractDao implements IDao {
         }
         return lista;
     }
-//    
-//    public void limpiarDuplicados(Objetos obj) {
-//        Jugador j = (Jugador) obj;
-//        String m = "delete from jugador where nombre=" + j.getNombre() +" and apellido=" + j.getApellido() +";";
-//        try {
-//            cx = super.getConexion();
-//            ps = cx.prepareStatement(m);
-//            ps.executeUpdate();
-//        } catch (SQLException ex) {
-//            setMensajeError(ex.getMessage());
-//        } finally {
-//            super.cerrarObjetos();
-//        }
-//    }
+
+    
+    public int getJugadorNombreApellido(Jugador j) {
+        int v = 0;
+
+        try {
+            cx = super.getConexion();
+            ps = cx.prepareStatement(get_jugador_nombre_apellido);
+            ps.setString(1, j.getNombre());
+            ps.setString(2, j.getApellido());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                v = 1;
+            }
+
+        } catch (SQLException e) {
+            setMensajeError(e.getMessage());
+        } finally {
+            super.cerrarObjetos();
+        }
+
+        return v;
+    }
 
 }

@@ -65,28 +65,6 @@ public class BonoDao extends AbstractDao implements IDao {
         List<Objetos> lista;
         lista = getBonos(-1, select_mysql);
         return lista;
-//        try {
-//            cx = super.getConexion();
-//            ps = cx.prepareStatement(select_mysql);
-//            rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                int id = rs.getInt("id");
-//                LocalDate fecha = rs.getDate("fecha").toLocalDate();
-//                String nombre = rs.getString("nombre");
-//                int id_jugador = rs.getInt("id_jugador");
-//                int horas = rs.getInt("horas");
-//                boolean estado = rs.getBoolean("estado");
-//                Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
-//                lista.add(b);
-//            }
-//
-//        } catch (SQLException e) {
-//            this.setMensajeError(e.getMessage());
-//        } finally {
-//            super.cerrarObjetos();
-//        }
-//        return lista;
     }
 
     
@@ -95,29 +73,6 @@ public class BonoDao extends AbstractDao implements IDao {
         List<Objetos> lista;
         lista = getBonos(idj, get_mysql_id_bono);
         return lista;
-//        try {
-//            cx = super.getConexion();
-//            ps = cx.prepareStatement(get_mysql_id_bono);
-//            ps.setInt(1, idj);
-//            rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                int id = rs.getInt("id");
-//                LocalDate fecha = rs.getDate("fecha").toLocalDate();
-//                String nombre = rs.getString("nombre");
-//                int id_jugador = rs.getInt("id_jugador");
-//                int horas = rs.getInt("horas");
-//                boolean estado = rs.getBoolean("estado");
-//                Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
-//                lista.add(b);
-//            }
-//
-//        } catch (SQLException e) {
-//            this.setMensajeError(e.getMessage());
-//        } finally {
-//            super.cerrarObjetos();
-//        }
-//        return lista;
     }
     
     

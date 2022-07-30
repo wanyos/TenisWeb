@@ -12,8 +12,6 @@
         <title>App tenis</title>
         <link rel="stylesheet" href="css/estilo.css?<%= LocalDate.now() %>"/>   <!-- Se pone fecha para actualziar la cache y obtenga los cambios del css  -->
         <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet"/> 
-        <%--<link rel="stylesheet" href="css/listar.css/">--%> 
-        <%--<link rel="stylesheet" href="css/crear.css">--%>
     </head>
     <body>
         <jsp:include page="comunes/titulo.jsp"/>

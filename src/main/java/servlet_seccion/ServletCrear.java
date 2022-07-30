@@ -105,8 +105,14 @@ public class ServletCrear extends HttpServlet {
 
         Objetos j = new Jugador(nombre, apellido, comentario);
         IDao interfaceDao = new JugadorDao();
-        crearObjeto(interfaceDao, j);
         
+        //Buscar si existe algún jugador con ese nombre y apellido y no dejar crear
+        if(compararJugador((Jugador) j)){
+           mensaje.add("!!! Error existe un jugador con ese nombre y apellido...");
+        } else {
+           crearObjeto(interfaceDao, j);     
+        }
+   
         request.setAttribute("mensaje", mensaje);
         request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
     }
@@ -153,7 +159,6 @@ public class ServletCrear extends HttpServlet {
         //si existe bono hay que gestionar el pago del bono, si no es correcto no seguir
         
         LocalDate fe = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        //obj_pares = (Objetos) request.getSession().getAttribute("obj_pares");
         if(!gestionPares(idj1, idj2)){
             mensaje.add(" !!!Error - Se ha producido un error al crear el objeto pares...");
             
@@ -171,6 +176,13 @@ public class ServletCrear extends HttpServlet {
         }
         request.setAttribute("mensaje", mensaje);
         request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
+    }
+    
+    
+    private boolean compararJugador(Jugador j){
+        JugadorDao dao = new JugadorDao();
+        int v = dao.getJugadorNombreApellido(j);
+        return v == 1;
     }
     
     /**
@@ -264,17 +276,8 @@ public class ServletCrear extends HttpServlet {
 
     private void crearObjeto(IDao interfaceDao, Objetos obj) throws ServletException, IOException {
         int v;
-//        if (obj instanceof Partido) {
-//            if (!comprobarActualizarBono()) {
-//                mensaje.add("!!!Error se ha producido un error en el pago del bono...");
-//                return;
-//            }
-//        }
         v = interfaceDao.crear(obj);
         if (v == 1) {
-//            if (obj instanceof Jugador) {
-//                limpiarTablaDuplicados(obj);
-//            }
             crearMensajeCorrecto(obj);
         } else {
             crearMensajeError(obj);
@@ -451,10 +454,6 @@ public class ServletCrear extends HttpServlet {
         return true;
     }
     
-//    private void limpiarTablaDuplicados(Objetos obj){
-//        JugadorDao jdao = new JugadorDao();
-//        jdao.limpiarDuplicados(obj);
-//    }
 
 
 }

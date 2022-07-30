@@ -69,7 +69,6 @@ public class ServletModificar extends HttpServlet {
            
         } else if(nombre_etiqueta.equalsIgnoreCase("Partido")){
              if(opcion.equalsIgnoreCase("editar")){
-                //editarPartido(request, response);
              } else {
                  eliminarPartido(request, response);
              }
@@ -152,8 +151,6 @@ public class ServletModificar extends HttpServlet {
          eliminarObjeto(request, response, interfaceDao, b);
      }
      
-     private void editarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-     }
     
      private void eliminarPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          int id = Integer.parseInt(id_select);
@@ -218,26 +215,28 @@ public class ServletModificar extends HttpServlet {
      
      
     private void actualizarBono(Objetos obj) {
-        IDao interfaceDao = new BonoDao();
         Partido p = (Partido) obj;
         int paga1 = p.getPagaj1();
         int idb1 = p.getIdBono1();
         int paga2 = p.getPagaj2();
         int idb2 = p.getIdBono2();
-        Bono b;
 
         if (paga1 > 0 && idb1 > 0) {
-            b = (Bono) interfaceDao.getObjeto(idb1);
-            int horas = b.getHoras();
-            b.setHoras(horas + paga1);
-            interfaceDao.editar(b);
+            updateBono(idb1, paga1);
         }
         if (paga2 > 0 && idb2 > 0) {
-            b = (Bono) interfaceDao.getObjeto(idb2);
-            int horas = b.getHoras();
-            b.setHoras(horas + paga2);
-            interfaceDao.editar(b);
+            updateBono(idb2, paga2);
         }
+    }
+    
+    private void updateBono(int id_bono, int horas_pagadas){
+        IDao interfaceDao = new BonoDao();
+        Bono b = (Bono) interfaceDao.getObjeto(id_bono);
+        int horas = b.getHoras();
+        b.setHoras(horas + horas_pagadas);
+        //si el bono estaba en false va a pasar a true aunque solo sea por el incremento de esta hora
+        b.setEstado(true);
+        interfaceDao.editar(b);
     }
      
 

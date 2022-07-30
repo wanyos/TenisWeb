@@ -1,6 +1,7 @@
 
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.List"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,11 +15,9 @@
             <div class="div-caja-form">
                 <h3>!!! Resultado de la operación...</h3>
                 </br></br>
-                    <%List<String> m = (List) request.getAttribute("mensaje");
-                      for(String aux: m){ %>
-                      <p> <%=aux%> <p>
-                          </br>
-                     <% } %>
+                <c:forEach var="m" items="${mensaje}">
+                    <p>${m}</p>
+                </c:forEach>
                 <form action="index.jsp">
                     <button class="estilo-boton" type="submit" name="btn_crear">Inicio</button>    
                 </form>
