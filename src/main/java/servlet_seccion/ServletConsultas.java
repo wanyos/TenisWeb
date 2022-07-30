@@ -5,6 +5,7 @@ import datos.IDao;
 import datos.JugadorDao;
 import datos.PartidoDao;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +37,6 @@ public class ServletConsultas extends HttpServlet {
         List<Objetos> lista_partidos = null;
         String jugador = request.getParameter("cbo_jugador");
         String fecha = request.getParameter("txt_fecha");
-
         int id_jugador = getIdJugador(jugador);
 
         String consulta = getConsulta(id_jugador, fecha);
@@ -61,7 +61,7 @@ public class ServletConsultas extends HttpServlet {
             //lista con todos los partidos del jugador
             return "mysql_id";
             
-        } else if (id_jugador <= 0 && (f != null || !f.isEmpty())) {
+        } else if (id_jugador <= 0 && (f != null && !f.isEmpty())) {
             //todos los partidos desde esa fecha
             return "mysql_fecha";
         } 
@@ -72,6 +72,7 @@ public class ServletConsultas extends HttpServlet {
     private List<Objetos> getListaPartidos(String consulta, int idj, String fe) {
         PartidoDao pdao = new PartidoDao();
         List<Objetos> lista_partidos = pdao.getListaConsulta(consulta, idj, fe);
+        Collections.sort(lista_partidos);
         return lista_partidos;
     }
     

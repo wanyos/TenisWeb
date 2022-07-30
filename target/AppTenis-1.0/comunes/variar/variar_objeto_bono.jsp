@@ -22,7 +22,6 @@
     <div class="div-caja-form">
         <c:set var="opcion" value="${param.opcion}"/>
 
-
         <form action="ServletModificar" method="post">
             <div class="div-estilo-form">
                 <c:choose>

@@ -129,4 +129,17 @@ public class Partido extends Objetos {
         List<String> lista_campos = super.getListaCampos("modelo.Partido");
         return lista_campos;
     }
+
+    @Override
+    public int compareTo(Objetos o) {
+       Partido aux = (Partido) o;
+       if(aux.getFecha().isAfter(getFecha())){
+           return 1;
+       } else if(aux.getFecha().isBefore(getFecha())){
+           return -1;
+       }
+        return 0;
+    }
+    
+    
 }

@@ -1,7 +1,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <section>
-    <div class="estilo-caja">
+    <div class="estilo-caja menu-superior">
         <div class="atras">
             <a href="index.jsp">Back</a>
         </div>

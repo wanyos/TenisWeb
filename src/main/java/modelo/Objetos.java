@@ -6,13 +6,15 @@ import java.util.*;
 import java.util.logging.*;
 
 
-public abstract class Objetos {
+public abstract class Objetos implements Comparable<Objetos> {
     
        
     public abstract List<String> getNombresCampos();
     
     public abstract int getId();
     
+     @Override
+    public abstract int compareTo(Objetos o);
     
     /**
      * Retorna una lista con los nombre de los atributos de la clase del parametro
@@ -34,6 +36,7 @@ public abstract class Objetos {
         }
         return lista_campos;
     }
+
     
          
         

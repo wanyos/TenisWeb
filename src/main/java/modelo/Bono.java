@@ -85,6 +85,16 @@ public class Bono extends Objetos {
         List<String> lista_campos = super.getListaCampos("modelo.Bono");
         return lista_campos;
     }
+
+    @Override
+    public int compareTo(Objetos o) {
+        if(o.getId() > getId()){
+            return -1;
+        } else if(o.getId() < getId()){
+            return 1;
+        }
+        return 0;
+    }
     
     
 }

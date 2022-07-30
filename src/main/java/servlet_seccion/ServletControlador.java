@@ -9,6 +9,7 @@ import datos.JugadorDao;
 import datos.PartidoDao;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -102,6 +103,7 @@ public class ServletControlador extends HttpServlet {
         }
          if(interfaceDao != null){
              lista = interfaceDao.select();
+             Collections.sort(lista);
          }
         return lista;
     }

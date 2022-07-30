@@ -1,8 +1,6 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="div-caja-form">
-
     <c:if test="${opcion == 'editar'}">
         <h3> Editar ${param.nombre_etiqueta} </h3>     
     </c:if>
@@ -22,5 +20,4 @@
         <jsp:include page="variar/variar_objeto_partido.jsp?${param.nombre_etiqueta}&${objeto}"/>
     </c:if>
 
-</div>
 

@@ -4,7 +4,7 @@ package modelo;
 import java.util.List;
 
 
-public class Jugador extends Objetos {
+public class Jugador extends Objetos implements Comparable<Objetos> {
 
     private int id_jugador;
     private String nombre, apellido, comentario;
@@ -61,6 +61,18 @@ public class Jugador extends Objetos {
     public List<String> getNombresCampos(){
         List<String> lista_campos = super.getListaCampos("modelo.Jugador");
         return lista_campos;
+    }
+
+    
+
+    @Override
+    public int compareTo(Objetos o) {
+       if(o.getId() > getId()){
+            return -1;
+        } else if(o.getId() < getId()){
+            return 1;
+        }
+        return 0;
     }
     
 

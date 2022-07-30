@@ -23,6 +23,5 @@
             var el = document.getElementById("div-principal");
             el.className = "estilo-caja principal";
         </script>
-       
     </body>
 </html>

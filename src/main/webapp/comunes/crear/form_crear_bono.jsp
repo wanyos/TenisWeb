@@ -18,7 +18,7 @@
             <input class="txt txt_numero" type="text" name="txt_horas" min="0" max="10" required/>
 
             <label for="txt_estado">Estado</label>
-            <input class="txt txt_cadena" type="text" name="txt_estado" value="activo"/>
+            <input class="txt txt_cadena" type="text" name="txt_estado" value="activo" readonly="true"/>
 
             <input type="hidden" name="nombre_etiqueta" value="${param.nombre_etiqueta}"/>
             <button class="estilo-boton" type="submit" name="btn_crear">Crear</button>

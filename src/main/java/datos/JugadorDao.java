@@ -154,5 +154,19 @@ public class JugadorDao extends AbstractDao implements IDao {
         }
         return lista;
     }
+//    
+//    public void limpiarDuplicados(Objetos obj) {
+//        Jugador j = (Jugador) obj;
+//        String m = "delete from jugador where nombre=" + j.getNombre() +" and apellido=" + j.getApellido() +";";
+//        try {
+//            cx = super.getConexion();
+//            ps = cx.prepareStatement(m);
+//            ps.executeUpdate();
+//        } catch (SQLException ex) {
+//            setMensajeError(ex.getMessage());
+//        } finally {
+//            super.cerrarObjetos();
+//        }
+//    }
 
 }

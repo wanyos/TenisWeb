@@ -25,7 +25,7 @@ public class ServletCrear extends HttpServlet {
     private List<Objetos> lista_jugadores;
     private Objetos obj_pares;
     private Bono bono_actualizar1, bono_actualizar2;
-    private int id_bono1, id_bono2;
+    private int horasp1, horasp2, id_bono1, id_bono2;
     
     
     @Override
@@ -45,8 +45,8 @@ public class ServletCrear extends HttpServlet {
                 ju2 = this.getJugador(id_jugador);
                 ju1 = this.getJugador(id_otro_jugador);
             }
-            lista_bonos_j1 = this.getListaBonos(ju1, -1);
-            lista_bonos_j2 = this.getListaBonos(ju2, -1);
+            lista_bonos_j1 = (List<Bono>)(List<?>)this.getListaBonos(ju1, -1);
+            lista_bonos_j2 = (List<Bono>)(List<?>)this.getListaBonos(ju2, -1);
              request.setAttribute("bonosj1", lista_bonos_j1);
              request.setAttribute("bonosj2", lista_bonos_j2);
              request.setAttribute("jugador1", ju1);  
@@ -60,8 +60,8 @@ public class ServletCrear extends HttpServlet {
             if (valorCorrecto(valor)) {
                 obj_pares = getObjetoId(valor);
                 Pares p = (Pares) obj_pares;
-                lista_bonos_j1 = this.getListaBonos(null, p.getIdJ1());
-                lista_bonos_j2 = this.getListaBonos(null, p.getIdJ2());
+                lista_bonos_j1 = (List<Bono>)(List<?>)this.getListaBonos(null, p.getIdJ1());
+                lista_bonos_j2 = (List<Bono>)(List<?>)this.getListaBonos(null, p.getIdJ2());
             }
             request.setAttribute("bonosj1", lista_bonos_j1);
             request.setAttribute("bonosj2", lista_bonos_j2);
@@ -82,6 +82,7 @@ public class ServletCrear extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         mensaje = new ArrayList<>(); //crear el array para guardar mensajes de error o exito
         String nombre_etiqueta = request.getParameter("nombre_etiqueta").toLowerCase();
         switch (nombre_etiqueta) {
             case "jugador":
@@ -138,8 +139,6 @@ public class ServletCrear extends HttpServlet {
 
     
     private void crearPartido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        mensaje = new ArrayList<>();
-        int v = 0;
         String fecha = request.getParameter("txt_fecha");
         String idj1 = request.getParameter("cbo_jugador1");
         String idj2 = request.getParameter("cbo_jugador2");
@@ -148,33 +147,52 @@ public class ServletCrear extends HttpServlet {
         String horas_p1 = request.getParameter("cbo_horas_p1");
         String horas_p2 = request.getParameter("cbo_horas_p2");
         
-        //si no existen los pares hay que crearlos, si al crearlos ya existen devolvera error, obtener los pares 
-        if (obj_pares == null) {
-            obj_pares = getObjetoPares(idj1, idj2);
-            if (obj_pares == null) {
-                v = crearPares(idj1, idj2);
-            }
-            if (v == 0) {
-                mensaje.add("Se ha producido un error al crear el objeto pares...");
-            }
-        } else {
-            LocalDate fe = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        //obtener los pares o crearlos, no se puede seguir sin obj_pares
+        //gestión pago
+        //uno de los dos jugadores ha de pagar minimo una hora, no se puede seguir
+        //si existe bono hay que gestionar el pago del bono, si no es correcto no seguir
+        
+        LocalDate fe = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        //obj_pares = (Objetos) request.getSession().getAttribute("obj_pares");
+        if(!gestionPares(idj1, idj2)){
+            mensaje.add(" !!!Error - Se ha producido un error al crear el objeto pares...");
+            
+        } else if (!gestionPago(paga1, horas_p1, paga2, horas_p2)){
+             mensaje.add(" !!!Error - Se ha producido un error en el proceso de pago...");
+             
+        } else if (comprobarActualizarBono()){
             int id_pares = obj_pares.getId();
-            int paga_j1 = gestionPago(1, paga1, horas_p1);
-            int paga_j2 = gestionPago(2, paga2, horas_p2);
-
-            if (paga_j1 > 0 || paga_j2 > 0) {
-                Objetos p = new Partido(fe, id_pares, paga_j1, paga_j2, id_bono1, id_bono2);
-                IDao interfaceDao = new PartidoDao();
-                crearObjeto(interfaceDao, p);
-            } else {
-                mensaje.add("Se ha producido un error en el pago de jugadores...");
-            }
+            Objetos p = new Partido(fe, id_pares, horasp1, horasp2, id_bono1, id_bono2);
+            IDao interfaceDao = new PartidoDao();
+            crearObjeto(interfaceDao, p);
+        } else {
+             mensaje.add(" !!!Error - Se ha producido un error y no es posible continuar...");
+             mensaje.add(" El error posiblemente se ha originado en el pago con bono...");
         }
         request.setAttribute("mensaje", mensaje);
         request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
     }
     
+    /**
+     * Gestiona el objeto pares, el objeto ha de existir
+     * @param idj1
+     * @param idj2
+     * @return 
+     */
+    private boolean gestionPares(String idj1, String idj2) {
+        int v = 0;
+        if (obj_pares == null) {
+            obj_pares = getObjetoPares(idj1, idj2);
+            if (obj_pares == null) {
+                v = crearPares(idj1, idj2);
+            } else {
+                return true;
+            }
+        } else if(obj_pares != null){
+            return true;
+        }
+         return v == 1;
+    }
     
     
     
@@ -228,8 +246,8 @@ public class ServletCrear extends HttpServlet {
     }
 
     
-    private List<Bono> getListaBonos(Jugador j, int idj) {
-        List<Bono> lista_bonos = null;
+    private List<Objetos> getListaBonos(Jugador j, int idj) {
+        List<Objetos> lista_bonos = null;
         BonoDao bDao = new BonoDao();
         if (j != null) {   
            lista_bonos = bDao.select(j.getId());
@@ -245,16 +263,18 @@ public class ServletCrear extends HttpServlet {
    
 
     private void crearObjeto(IDao interfaceDao, Objetos obj) throws ServletException, IOException {
-        mensaje = new ArrayList<>();
         int v;
-        if (obj instanceof Partido) {
-            if (!comprobarActualizarBono()) {
-                mensaje.add("!!!Error se ha producido un error en el pago del bono...");
-                return;
-            }
-        }
+//        if (obj instanceof Partido) {
+//            if (!comprobarActualizarBono()) {
+//                mensaje.add("!!!Error se ha producido un error en el pago del bono...");
+//                return;
+//            }
+//        }
         v = interfaceDao.crear(obj);
         if (v == 1) {
+//            if (obj instanceof Jugador) {
+//                limpiarTablaDuplicados(obj);
+//            }
             crearMensajeCorrecto(obj);
         } else {
             crearMensajeError(obj);
@@ -315,37 +335,91 @@ public class ServletCrear extends HttpServlet {
     }
      
      
-     private int gestionPago(int juga, String pago, String horas){
-         int v = 0;
-         int h = Integer.parseInt(horas);
-         if(valorCorrecto(pago)){
-             //hay que descontar las horas del bono al jugador
-             if(juga == 1){
-               id_bono1 = Integer.parseInt(pago);    
-               prepararBono(juga, id_bono1, h);
-             } else {
-               id_bono2 = Integer.parseInt(pago);
-               prepararBono(juga, id_bono2, h);
-             }
-             return h;
-         } else if(pago.equals("si")){
-             return h;
+     /**
+      * La opcion pago puede tener valor si/no/id_bono
+      * @param paga1
+      * @param horas_p1
+      * @param paga2
+      * @param horas_p2
+      * @return 
+      */
+    private boolean gestionPago(String paga1, String horas_p1, String paga2, String horas_p2) {
+        int h1 = getNumero(horas_p1);
+        int h2 = getNumero(horas_p2);
+        if ((h1 == -1 || h2 == -1) || (h1 == 0 && h2 == 0)) {
+            mensaje.add(" !!!Error - Alguno de los jugadores debe pagar al menos una hora...");
+            return false;
+        }
+        if (!prepararPagoBono(1, paga1, h1)) {
+            mensaje.add(" !!!Error - Se ha producido un error en el pago con bono del jugador 1...");
+            return false;
+        }
+        if (!prepararPagoBono(2, paga2, h2)) {
+            mensaje.add(" !!!Error - Se ha producido un error en el pago con bono del jugador 2...");
+            return false;
+        }
+
+        if (paga1.equalsIgnoreCase("si")) {
+            horasp1 = h1;
+        }
+        if (paga2.equalsIgnoreCase("si")) {
+            horasp2 = h2;
+        }
+        return true;
+    }
+     
+     
+     private int getNumero(String n){
+         int v = -1;
+         try {
+             v = Integer.parseInt(n);
+         } catch(NumberFormatException e){
+             return v;
          }
          return v;
      }
      
-     
-    private void prepararBono(int jugador, int id_bono, int horas) {
-        IDao interfaceDao = new BonoDao();
-        Objetos b = interfaceDao.getObjeto(id_bono);
-        if(jugador == 1){
-            bono_actualizar1 = (Bono) b;    
-            int horas_bono = bono_actualizar1.getHoras();
-            bono_actualizar1.setHoras(horas_bono - horas);
-        } else {
-            bono_actualizar2 = (Bono) b;    
-            int horas_bono = bono_actualizar2.getHoras();
-            bono_actualizar2.setHoras(horas_bono - horas);
+          
+    private boolean prepararPagoBono(int jugador, String id_bono, int horas) {
+        int idb;
+        Bono b;
+        if (valorCorrecto(id_bono)) {
+            idb = getNumero(id_bono);
+
+            if (idb == -1) {
+                mensaje.add(" El id_bono no es correcto...");
+                return false;
+            }
+            IDao interfaceDao = new BonoDao();
+            b = (Bono) interfaceDao.getObjeto(idb);
+            int horas_disponibles = b.getHoras();
+            if (horas_disponibles == 0 || horas_disponibles - horas < 0) {
+                mensaje.add(" !!!Error - La cantidad de horas a descontar del bono no es posible...");
+                return false;
+            } else {
+                if (jugador == 1) {
+                    bono_actualizar1 = b;
+                    bono_actualizar1.setHoras(horas_disponibles - horas);
+                    horasp1 = horas;
+                    id_bono1 = b.getId();
+                } else {
+                    bono_actualizar2 = b;
+                    bono_actualizar2.setHoras(horas_disponibles - horas);
+                    horasp2 = horas;
+                    id_bono2 = b.getId();
+                }
+                 cambiarEstadoBono(b);
+            }
+        }
+        return true;
+    }
+        
+         
+         
+    private void cambiarEstadoBono(Bono b){
+        int horas_disponibles = b.getHoras();
+        if(horas_disponibles == 0){
+            b.setEstado(false);
         }
     }
     
@@ -362,6 +436,10 @@ public class ServletCrear extends HttpServlet {
         return v;
     }
     
+    /**
+     * Comprueba si hay algún bono en espera para actualizar sus horas
+     * @return 
+     */
     private boolean comprobarActualizarBono() {
         int v;
         if (bono_actualizar1 != null || bono_actualizar2 != null) {
@@ -372,6 +450,11 @@ public class ServletCrear extends HttpServlet {
         }
         return true;
     }
+    
+//    private void limpiarTablaDuplicados(Objetos obj){
+//        JugadorDao jdao = new JugadorDao();
+//        jdao.limpiarDuplicados(obj);
+//    }
 
 
 }

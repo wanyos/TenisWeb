@@ -17,7 +17,7 @@
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Crear Partido</title>
-        <link rel="stylesheet" href="css/estilo.css?<%= LocalDate.now() %>"/>
+        <link rel="stylesheet" href="css/estilo.css?<%= LocalDate.now()%>"/>
         <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet"/> 
     </head>
     <body>
@@ -26,7 +26,7 @@
         <jsp:include page="../menu_datos.jsp"/>
 
         <div class="estilo-caja principal">
-
+            <h3>Crear Partido</h3>
             <div class="div-caja-form">
 
                 <div class="div-caja-form">
@@ -45,8 +45,11 @@
 
                 <form action="ServletCrear" method="post">
                     <div class="div-estilo-form">
-                        <label for="txt_fecha">Fecha</label>
-                        <input class="txt txt_cadena" type="date" name="txt_fecha" min="2000-01-01" max="2050-01-01" required/>
+
+                        <div class="div-caja-form">
+                            <label for="txt_fecha">Fecha</label>
+                            <input class="txt txt_cadena" id="input_fecha" type="date" name="txt_fecha" min="2000-01-01" max="2050-01-01" required/>
+                        </div>
 
                         <div class="div-caja-form">
                             <label for="cbo_jugador1">Jugador1</label>
@@ -154,6 +157,32 @@
             }
         </script>
 
-        <jsp:include page="../pie_pagina.jsp"/>
+        <script>
+            const txt_fecha = document.getElementById("input_fecha");
+            txt_fecha.addEventListener("change", validaFecha);
+           
+            function validaFecha() {
+                txt_fecha.style.color = "white"; 
+                const valor_fecha = txt_fecha.value;
+                const fecha_escogida = new Date(valor_fecha);
+
+                const fecha_sistema = Date.now();
+                const fecha_ahora = new Date(fecha_sistema);
+
+                fecha_escogida.setHours(0, 0, 0, 0);
+                fecha_ahora.setHours(0, 0, 0, 0);
+
+                console.log("fecha escogida: " + fecha_escogida);
+                console.log("fecha ahora: " + fecha_ahora);
+
+                if (fecha_escogida < fecha_ahora) {
+                    alert("la fecha debe ser mayor a la actual...");
+                    txt_fecha.style.color = "red"; 
+                    txt_fecha.value = "00/00/0000";
+                } 
+            }
+        </script>
+        
+         <jsp:include page="../pie_pagina.jsp"/>
     </body>
 </html>

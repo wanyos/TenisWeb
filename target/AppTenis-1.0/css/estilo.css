@@ -32,6 +32,10 @@ h1, img{
     display: inline-block;;
 }
 
+h3{
+    display: block;
+}
+
 .titulo img{
     width: 50px;
     height: 50px;
@@ -50,7 +54,6 @@ h1, img{
     padding-right: 20px;
     border-radius: 10px;
     box-shadow: 10px 10px black;
-    display: flex;
 }
 
 section .estilo-caja {
@@ -89,7 +92,6 @@ a:hover{
     margin-right: auto;
     display: flex;
     font-size: 20px;
-    justify-content: space-between;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -97,6 +99,13 @@ a:hover{
 .principal{
     margin-top: 15px;
     height: 75vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-superior{
+    display: flex;
+    justify-content: space-between;
 }
 
 .principal-img{
@@ -122,13 +131,17 @@ footer{
 
 .div-tabla{
     background-color: #215c75;
-    width: 80%;
+    max-height: 100%;
+    overflow:scroll;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .div-tabla table{
-    width: 60%;
-    margin-top: 1em;
-    margin-left: 2em;
+    width: 90%;
+    margin-top: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
     border-collapse: separate;
     border-spacing: 20px;
     border: 1px solid black;
@@ -142,6 +155,7 @@ footer{
     border-bottom: 1px solid black;
     padding-bottom: 5px;
     text-transform: uppercase;
+    font-size: 15px;
 }
 
 .div-tabla table tbody td{
@@ -155,9 +169,13 @@ footer{
 
 /* Caja principal para coger dentro formularios*/
 .div-caja-form{
+    width: 90%;
     margin-top: 1em;
-    margin-left: 2em;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px;
+    max-height: 75%;
+    border: 1px solid white;
 }
 
 /* Agrupa varios formularios uno al lado del otro*/
@@ -258,267 +276,3 @@ p {
 
 
 
-
-
-
-
-
-/*
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inconsolata', monospace;
-    color: white;
-    --color-fondo: #215c75;
-    --color-fuente: white;
-}
-
-html{
-    position: relative;
-    min-height: 100%;
-}
-
-body{
-    background: linear-gradient(90deg, blue, #93adf5);
-    height: 100%;
-}
-
-.titulo{
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    height: 75px;
-    padding-left: 10px;
-}
-
-h1, img{
-    display: inline-block;;
-}
-
-.titulo img{
-    width: 50px;
-    height: 50px;
-    padding-top: 10px;
-}
-
-.estilo-caja{
-    background-color: var(--color-fondo);
-    width: 90%;
-    height: 50px;
-    margin-right: auto;
-    margin-left: auto;
-    font-size: 20px;
-    padding-left: 20px;
-    padding-top: 15px;
-    padding-right: 20px;
-    border-radius: 10px;
-    box-shadow: 10px 10px black;
-    display: flex;
-}
-
-section .estilo-caja {
-    justify-content: space-between;
-}
-
-nav{
-    display: flex;
-    justify-content: space-between;
-}
-
-a{
-  text-decoration: none;
-}
-
-a:hover{
-    text-decoration: underline;
-}
-
-.menu-datos{
-    margin-left: 2rem;
-}
-
-.menu-datos a{
-  padding-left: 20px;
-}
-
-
-.atras{
-    margin-left: 20px;
-}
-
-.menu-atras{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    font-size: 20px;
-    justify-content: space-between;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.principal{
-    margin-top: 15px;
-    height: 75vh;
-}
-
-.principal-img{
-    background-image: url("../img/ball-tennis.jpg");
-    background-size: cover;
-}
-
-footer{
-    position: absolute;
-    bottom: 0;
-    padding-bottom: 1%;
-    padding-left: 2.5%;
-}
-
-
-.div-tabla{
-    background-color: #215c75;
-    width: 80%;
-}
-
-.div-tabla table{
-    width: 60%;
-    margin-top: 1em;
-    margin-left: 2em;
-    border-collapse: separate;
-    border-spacing: 20px;
-    border: 1px solid black;
-}
-
-.div-tabla table th, td{
-    text-align: center;
-}
-
-.div-tabla table thead td{
-    border-bottom: 1px solid black;
-    padding-bottom: 5px;
-    text-transform: uppercase;
-}
-
-
-
-
-
-.div-crear{
-    width: 80%;
-}
-
-.div-form-crear{
-    margin-top: 1em;
-    margin-left: 5em;
-    padding: 10px;
-    width: 60%;
-}
-
-.div-form-crear form{
-    display: flex;
-    flex-direction: column;
-    width: 60%;
-    font-family: 'Inconsolata', monospace;
-    color: var(--color-fuente);
-}
-
- input{
-    border: none;
-    outline: none;
-    border-bottom: 1px solid black;
-    margin-bottom: 25px;
-    background-color: inherit;
-    font-size: 15px;
-}
-
-.div-form-crear label{
-    margin-bottom: 10px;
-}
-
-
-.div-form-crear-partido{
-    width: 80%;
-    margin-top: 1em;
-    margin-left: 5em;
-    padding: 10px;
-}
-
-.div-modificar-partido{
-   display: inline-block;
-}
-
-
-
-
-.div-buscarId-jugador{
-    width: 80%;
-    margin-top: 1em;
-    margin-left: 3em;
-    padding: 10px;
-    font-size: 18px;
-}
-
-.div-buscarId-jugador select,
-.aspecto-select{
-    text-align: center;
-    font-family: 'Inconsolata', monospace;
-    color: var(--color-fuente);
-    background-color: inherit;
-    font-size: 15px;
-}
-
-.div-buscarId-jugador select option,
-.aspecto-select-option{
-    color: var(--color-fuente);
-    background-color: var(--color-fondo);
-}
-
-.div-select-jugador,
-.div-paga-jugador{
-    padding: 10px;
-}
-
-
-.ancho-select{
-   min-width: 10rem;
-}
-
-.alinear-bloque{
-  display: inline-block;
-}
-
-
-
-
-
-.estilo-boton{
-    margin-left: 10px;
-    width: 80px;
-    height: 50px;
-    margin-top: 15px;
-    cursor: pointer;
-    background-color: #215c75;
-    font-family: 'Inconsolata', monospace;
-    color: var(--color-fuente);
-    box-shadow: 10px 10px black;
-    border-radius: 10px;
-    font-size: 15px;
-}
-
-
-p {
-   font-family: 'Inconsolata', monospace;
-    color: var(--color-fuente);
-}
-
-
-.txt_id{
-    font-size: 15px;
-    width: 25px;
-    text-align: center;
-}
-
-*/

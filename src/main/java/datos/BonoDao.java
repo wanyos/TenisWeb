@@ -16,7 +16,7 @@ public class BonoDao extends AbstractDao implements IDao {
     private final String update_mysql = "update bono set fecha=?, nombre=?, id_jugador=?, horas=?, estado=? where id=?";
     private final String delete_mysql = "delete from bono where id=?";
     private final String get_mysql_id = "select * from bono where id=?";
-    private final String get_mysql_id_bono = "select * from bono where id_jugador=? and estado=?";
+    private final String get_mysql_id_bono = "select * from bono where id_jugador=? and estado=1";
     private String mensaje_error;
     
     public BonoDao(){}
@@ -30,14 +30,14 @@ public class BonoDao extends AbstractDao implements IDao {
         this.mensaje_error = mensaje_error;
     }
     
-    
-    @Override
-    public List<Objetos> select() {
+    private List<Objetos> getBonos(int idj, String sql){
         List<Objetos> lista = new ArrayList<>();
-
         try {
             cx = super.getConexion();
-            ps = cx.prepareStatement(select_mysql);
+            ps = cx.prepareStatement(sql);
+            if(idj > -1){
+             ps.setInt(1, idj);    
+            }
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -58,36 +58,66 @@ public class BonoDao extends AbstractDao implements IDao {
         }
         return lista;
     }
-
     
     
-     public List<Bono> select(int idj) {
-        List<Bono> lista = new ArrayList<>();
-
-        try {
-            cx = super.getConexion();
-            ps = cx.prepareStatement(get_mysql_id_bono);
-            ps.setInt(1, idj);
-            ps.setInt(2, 1);  //el bono debe estar activo
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                LocalDate fecha = rs.getDate("fecha").toLocalDate();
-                String nombre = rs.getString("nombre");
-                int id_jugador = rs.getInt("id_jugador");
-                int horas = rs.getInt("horas");
-                boolean estado = rs.getBoolean("estado");
-                Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
-                lista.add(b);
-            }
-
-        } catch (SQLException e) {
-            this.setMensajeError(e.getMessage());
-        } finally {
-            super.cerrarObjetos();
-        }
+    @Override
+    public List<Objetos> select() {
+        List<Objetos> lista;
+        lista = getBonos(-1, select_mysql);
         return lista;
+//        try {
+//            cx = super.getConexion();
+//            ps = cx.prepareStatement(select_mysql);
+//            rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                int id = rs.getInt("id");
+//                LocalDate fecha = rs.getDate("fecha").toLocalDate();
+//                String nombre = rs.getString("nombre");
+//                int id_jugador = rs.getInt("id_jugador");
+//                int horas = rs.getInt("horas");
+//                boolean estado = rs.getBoolean("estado");
+//                Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
+//                lista.add(b);
+//            }
+//
+//        } catch (SQLException e) {
+//            this.setMensajeError(e.getMessage());
+//        } finally {
+//            super.cerrarObjetos();
+//        }
+//        return lista;
+    }
+
+    
+    
+     public List<Objetos> select(int idj) {
+        List<Objetos> lista;
+        lista = getBonos(idj, get_mysql_id_bono);
+        return lista;
+//        try {
+//            cx = super.getConexion();
+//            ps = cx.prepareStatement(get_mysql_id_bono);
+//            ps.setInt(1, idj);
+//            rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                int id = rs.getInt("id");
+//                LocalDate fecha = rs.getDate("fecha").toLocalDate();
+//                String nombre = rs.getString("nombre");
+//                int id_jugador = rs.getInt("id_jugador");
+//                int horas = rs.getInt("horas");
+//                boolean estado = rs.getBoolean("estado");
+//                Bono b = new Bono(id, fecha, nombre, id_jugador, horas, estado);
+//                lista.add(b);
+//            }
+//
+//        } catch (SQLException e) {
+//            this.setMensajeError(e.getMessage());
+//        } finally {
+//            super.cerrarObjetos();
+//        }
+//        return lista;
     }
     
     

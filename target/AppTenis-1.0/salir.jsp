@@ -18,7 +18,7 @@
         <div class="estilo-caja principal principal-img salir">
             <% request.getSession().invalidate(); %>
             <h3>Hasta otra...</h3>
-            <a href="javascript:cerrar()">Salir</a>
+            <a href="javascript:intervalo()">Salir</a>
         </div> 
     </body>
     <script src="js/funciones.js"></script> 
