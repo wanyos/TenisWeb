@@ -152,6 +152,7 @@ public class ServletCrear extends HttpServlet {
         String paga2 = request.getParameter("cbo_paga2");
         String horas_p1 = request.getParameter("cbo_horas_p1");
         String horas_p2 = request.getParameter("cbo_horas_p2");
+        String comentario = request.getParameter("txt_comentario");
         
         //obtener los pares o crearlos, no se puede seguir sin obj_pares
         //gestión pago
@@ -167,7 +168,7 @@ public class ServletCrear extends HttpServlet {
              
         } else if (comprobarActualizarBono()){
             int id_pares = obj_pares.getId();
-            Objetos p = new Partido(fe, id_pares, horasp1, horasp2, id_bono1, id_bono2);
+            Objetos p = new Partido(fe, id_pares, horasp1, horasp2, id_bono1, id_bono2, comentario);
             IDao interfaceDao = new PartidoDao();
             crearObjeto(interfaceDao, p);
         } else {
@@ -404,12 +405,16 @@ public class ServletCrear extends HttpServlet {
                     bono_actualizar1 = b;
                     bono_actualizar1.setHoras(horas_disponibles - horas);
                     horasp1 = horas;
-                    id_bono1 = b.getId();
+                    if(horas > 0){
+                      id_bono1 = b.getId();    
+                    }
                 } else {
                     bono_actualizar2 = b;
                     bono_actualizar2.setHoras(horas_disponibles - horas);
                     horasp2 = horas;
-                    id_bono2 = b.getId();
+                    if(horas > 0){
+                       id_bono2 = b.getId();     
+                    }
                 }
                  cambiarEstadoBono(b);
             }

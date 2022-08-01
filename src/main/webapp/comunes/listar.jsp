@@ -50,6 +50,7 @@
                             <td>${partido.getPagaj2()}</td>
                             <td>${partido.getIdBono1()}</td>
                             <td>${partido.getIdBono2()}</td>
+                            <td>${partido.getComentario()}</td>
                         </tr>
                     </c:forEach>
                 </c:if>

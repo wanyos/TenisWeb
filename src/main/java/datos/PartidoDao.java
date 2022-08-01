@@ -13,12 +13,12 @@ import modelo.Partido;
 
 public class PartidoDao extends AbstractDao implements IDao {
 
-    private final String mysql_insert = "insert into partido(fecha, id_pares, pagaj1, pagaj2, id_bono1, id_bono2) values (?,?,?,?,?,?)";
-    private final String mysql_select = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2"
+    private final String mysql_insert = "insert into partido(fecha, id_pares, pagaj1, pagaj2, id_bono1, id_bono2, comentario) values (?,?,?,?,?,?,?)";
+    private final String mysql_select = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2, partido.comentario"
                                         + " from partido inner join pares on partido.id_pares=pares.id";
-    private final String mysql_update = "update from partido set fecha=?, id_pares=?, pagaj1=?, pagaj2=?, id_bono1=?, id_bono2=? where id=?)";
+    private final String mysql_update = "update from partido set fecha=?, id_pares=?, pagaj1=?, pagaj2=?, id_bono1=?, id_bono2=?, comentario=? where id=?)";
     private final String mysql_delete = "delete from partido where id=?";
-    private final String mysql_get_obj = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+    private final String mysql_get_obj = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2, partido.comentario "
                                         + "from partido inner join pares on partido.id_pares=pares.id where partido.id=?;";
     private String mensaje_error;
     
@@ -66,7 +66,8 @@ public class PartidoDao extends AbstractDao implements IDao {
                 int paga2 = rs.getInt("partido.pagaj2");
                 int id_bono1 = rs.getInt("partido.id_bono1");
                 int id_bono2 = rs.getInt("partido.id_bono2");
-                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2);
+                String comentario = rs.getString("comentario");
+                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2, comentario);
                 lista.add(p);
             }
         } catch (SQLException e) {
@@ -91,6 +92,7 @@ public class PartidoDao extends AbstractDao implements IDao {
             ps.setInt(4, p.getPagaj2());
             ps.setInt(5, p.getIdBono1());
             ps.setInt(6, p.getIdBono2());
+            ps.setString(7, p.getComentario());
             v = ps.executeUpdate();
         } catch(SQLException e){
             this.setMensajeError(e.getMessage());
@@ -114,7 +116,8 @@ public class PartidoDao extends AbstractDao implements IDao {
             ps.setInt(4, p.getPagaj2());
             ps.setInt(5, p.getIdBono1());
             ps.setInt(6, p.getIdBono2());
-            ps.setInt(7, p.getId());
+            ps.setString(7, p.getComentario());
+            ps.setInt(8, p.getId());
             v = ps.executeUpdate();
         } catch(SQLException e){
             this.setMensajeError(e.getMessage());
@@ -161,7 +164,8 @@ public class PartidoDao extends AbstractDao implements IDao {
                 int paga2 = rs.getInt("partido.pagaj2");
                 int id_bono1 = rs.getInt("partido.id_bono1");
                 int id_bono2 = rs.getInt("partido.id_bono2");
-                p = new Partido(idp, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2);
+                String comentario = rs.getString("comentario");
+                p = new Partido(idp, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2, comentario);
            }
        } catch(SQLException e){
            this.setMensajeError(e.getMessage());
@@ -190,7 +194,8 @@ public class PartidoDao extends AbstractDao implements IDao {
                 int paga2 = rs.getInt("partido.pagaj2");
                 int id_bono1 = rs.getInt("partido.id_bono1");
                 int id_bono2 = rs.getInt("partido.id_bono2");
-                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2);
+                String comentario = rs.getString("comentario");
+                Partido p = new Partido(id, fecha, id_pares, jugador1, jugador2, paga1, paga2, id_bono1, id_bono2, comentario);
                 lista.add(p);
             }
         } catch (SQLException e) {
@@ -207,16 +212,16 @@ public class PartidoDao extends AbstractDao implements IDao {
          String fecha_actual = '\u0022'+""+fecha_ahora+""+'\u0022';
         switch (con) {
             case "mysql_id_fecha":
-            String mysql_id_fecha = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+            String mysql_id_fecha = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2, partido.comentario "
                                   + "from partido inner join pares on partido.id_pares=pares.id where (pares.idj1="+id+" or pares.idj2="+id+") and "
                                   + "(partido.fecha between "+f+" and "+fecha_actual+");";
             return mysql_id_fecha;
             case "mysql_id":
-            String mysql_id = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+            String mysql_id = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2, partido.comentario "
                             + "from partido inner join pares on partido.id_pares=pares.id where pares.idj1="+id+" or pares.idj2="+id+";";
             return mysql_id;
             case "mysql_fecha":
-            String mysql_fecha = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2 "
+            String mysql_fecha = "select partido.id, partido.fecha, partido.id_pares, pares.jugador1, pares.jugador2, partido.pagaj1, partido.pagaj2, partido.id_bono1, partido.id_bono2, partido.comentario "
                                + "from partido inner join pares on partido.id_pares=pares.id where partido.fecha between"+f+" and "+fecha_actual+";";
             return mysql_fecha;
             default:

@@ -51,6 +51,10 @@
                             <input class="txt txt_cadena" id="input_fecha" type="date" name="txt_fecha" min="2000-01-01" max="2050-01-01" required/>
                         </div>
 
+                     <div class="div-agrupar-form">
+                        
+                        <div class="div_caja_form">
+                        
                         <div class="div-caja-form">
                             <label for="cbo_jugador1">Jugador1</label>
                             <select class="ancho-select" id="select_j1" name="cbo_jugador1" onchange="ir(this.value, 'select_j1')">
@@ -89,52 +93,61 @@
                             </select>
                         </div>
 
-                        <div class="div-caja-form">
-                            <label>Paga- j1</label>
-                            <select class="ancho-select" name="cbo_paga1"> 
-                                <c:set var="bonosj1" value="${bonosj1}"/>
-                                <c:if test="${bonosj1 != null}">
-                                    <c:forEach var="bono" items="${bonosj1}"> 
-                                        <option value=${bono.id}>id:${bono.id} - Horas:${bono.horas}</option>
-                                    </c:forEach> 
-                                </c:if> 
-                                <c:if test="${bonosj1 == null}">
-                                    <option value="no">No</option>
-                                    <option value="si">Si</option>
-                                </c:if>
-                            </select>
+                            <div class="div-caja-form">
+                                <label>Paga- j1</label>
+                                <select class="ancho-select" name="cbo_paga1"> 
+                                    <c:set var="bonosj1" value="${bonosj1}"/>
+                                    <c:if test="${bonosj1 != null}">
+                                        <c:forEach var="bono" items="${bonosj1}"> 
+                                            <option value=${bono.id}>id:${bono.id} - Horas:${bono.horas}</option>
+                                        </c:forEach> 
+                                    </c:if> 
+                                    <c:if test="${bonosj1 == null}">
+                                        <option value="no">No</option>
+                                        <option value="si">Si</option>
+                                    </c:if>
+                                </select>
 
-                            <label>Horas</label>
-                            <select name="cbo_horas_p1">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
+                                <label>Horas</label>
+                                <select name="cbo_horas_p1">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+
+                            <div class="div-caja-form">
+                                <label>Paga- j2</label>
+                                <select class="ancho-select" name="cbo_paga2">  
+                                    <c:set var="bonosj2" value="${bonosj2}"/>
+                                    <c:if test="${bonosj2 != null}">
+                                        <c:forEach var="bono" items="${bonosj2}"> 
+                                            <option value=${bono.id}>id:${bono.id} - Horas:${bono.horas}</option>
+                                        </c:forEach> 
+
+                                    </c:if>
+                                    <c:if test="${bonosj2 == null}">
+                                        <option value="no">No</option>
+                                        <option value="si">Si</option> 
+                                    </c:if>
+                                </select>
+
+                                <label>Horas</label>
+                                <select name="cbo_horas_p2">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+
                         </div>
+                                    
+                            <div class="div-caja-form div-estilo-form">
+                                <label>Comentario</label>
+                                <textarea name="txt_comentario" rows="10" cols="50"></textarea>
+                            </div>        
 
-                        <div class="div-caja-form">
-                            <label>Paga- j2</label>
-                            <select class="ancho-select" name="cbo_paga2">  
-                                <c:set var="bonosj2" value="${bonosj2}"/>
-                                <c:if test="${bonosj2 != null}">
-                                    <c:forEach var="bono" items="${bonosj2}"> 
-                                        <option value=${bono.id}>id:${bono.id} - Horas:${bono.horas}</option>
-                                    </c:forEach> 
-
-                                </c:if>
-                                <c:if test="${bonosj2 == null}">
-                                    <option value="no">No</option>
-                                    <option value="si">Si</option> 
-                                </c:if>
-                            </select>
-
-                            <label>Horas</label>
-                            <select name="cbo_horas_p2">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
+                     </div>
 
                         <input type="hidden" name="nombre_etiqueta" value="partido"/>
                         <button class="estilo-boton" type="submit" name="btn_crear">Crear</button>
@@ -160,9 +173,9 @@
         <script>
             const txt_fecha = document.getElementById("input_fecha");
             txt_fecha.addEventListener("change", validaFecha);
-           
+
             function validaFecha() {
-                txt_fecha.style.color = "white"; 
+                txt_fecha.style.color = "white";
                 const valor_fecha = txt_fecha.value;
                 const fecha_escogida = new Date(valor_fecha);
 
@@ -177,12 +190,12 @@
 
                 if (fecha_escogida < fecha_ahora) {
                     alert("la fecha debe ser mayor a la actual...");
-                    txt_fecha.style.color = "red"; 
+                    txt_fecha.style.color = "red";
                     txt_fecha.value = "00/00/0000";
-                } 
+                }
             }
         </script>
-        
-         <jsp:include page="../pie_pagina.jsp"/>
+
+        <jsp:include page="../pie_pagina.jsp"/>
     </body>
 </html>

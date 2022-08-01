@@ -89,6 +89,10 @@
                                 <label for="txt_id_bono2">Id Bono2</label>
                                 <input class="txt txt_numero" type="text" name="txt_id_bono2" value="${objeto.idBono2}" readonly="true"/>
                             </div>
+                            <div class="div-estilo-form div-alinear-abajo">
+                                <label>Comentario</label>
+                                <textarea name="txt_comentario" rows="10" cols="50" readonly="true">${objeto.comentario}</textarea>
+                            </div>    
                         </div>
                     </c:when>
 

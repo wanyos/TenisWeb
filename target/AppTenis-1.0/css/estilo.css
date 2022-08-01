@@ -169,7 +169,7 @@ footer{
 
 /* Caja principal para coger dentro formularios*/
 .div-caja-form{
-    width: 90%;
+    /*width: 90%;*/
     margin-top: 1em;
     margin-left: auto;
     margin-right: auto;
@@ -212,7 +212,7 @@ footer{
 /* Estilo de input de tipo número más corto que uno de tipo text */
 .txt_numero{
     margin-left: 30px;
-    width: 30px;
+    width: 50px;
 }
 
 /* Ancho de input tipo text*/
@@ -236,7 +236,7 @@ select{
 option{
     text-align: center;
     color: var(--color-fuente);
-    background-color: blue;
+    background-color: #2671B7;
 }
 
 .ancho-select{
@@ -262,6 +262,14 @@ option{
 p {
    font-family: 'Inconsolata', monospace;
     color: var(--color-fuente);
+}
+
+textarea{
+  margin-top: 10px;
+  padding: 10px;
+  font-family: 'Inconsolata', monospace;
+  color: var(--color-fuente);
+  background-color: inherit;
 }
 
 

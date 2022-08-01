@@ -13,10 +13,11 @@ public class Partido extends Objetos {
     private String jugador1, jugador2;
     private int pagaj1, pagaj2;
     private int idBono1, idBono2;
+    private String comentario;
 
     public Partido(){}
     
-     public Partido(int id, LocalDate fecha, int id_pares, String jugador1, String jugador2, int pagaj1, int pagaj2, int id_bono1, int id_bono2) {
+     public Partido(int id, LocalDate fecha, int id_pares, String jugador1, String jugador2, int pagaj1, int pagaj2, int id_bono1, int id_bono2, String comentario) {
         this.idPartido = id;
         this.fecha = fecha;
         this.idPares = id_pares;
@@ -26,9 +27,10 @@ public class Partido extends Objetos {
         this.pagaj2 = pagaj2;
         this.idBono1 = id_bono1;
         this.idBono2 = id_bono2;
+        this.comentario = comentario;
     }
     
-    public Partido(int id_partido, LocalDate fecha, int id_pares, int pagaj1, int pagaj2, int id_bono1, int id_bono2) {
+    public Partido(int id_partido, LocalDate fecha, int id_pares, int pagaj1, int pagaj2, int id_bono1, int id_bono2, String comentario) {
         this.idPartido = id_partido;
         this.fecha = fecha;
         this.idPares = id_pares;
@@ -36,15 +38,17 @@ public class Partido extends Objetos {
         this.pagaj2 = pagaj2;
         this.idBono1 = id_bono1;
         this.idBono2 = id_bono2;
+        this.comentario = comentario;
     }
 
-    public Partido(LocalDate fecha, int id_pares, int pagaj1, int pagaj2, int id_bono1, int id_bono2) {
+    public Partido(LocalDate fecha, int id_pares, int pagaj1, int pagaj2, int id_bono1, int id_bono2, String comentario) {
         this.fecha = fecha;
         this.idPares = id_pares;
         this.pagaj1 = pagaj1;
         this.pagaj2 = pagaj2;
         this.idBono1 = id_bono1;
         this.idBono2 = id_bono2;
+        this.comentario = comentario;
     }
  
 
@@ -76,6 +80,11 @@ public class Partido extends Objetos {
     public String getJugador1() {
         return jugador1;
     }
+    
+    public String getComentario(){
+        return comentario;
+    }
+    
 
     public void setJugador1(String jugador1) {
         this.jugador1 = jugador1;
@@ -119,6 +128,10 @@ public class Partido extends Objetos {
 
     public void setPagaj2(int pagaj2) {
         this.pagaj2 = pagaj2;
+    }
+    
+    public void setComentario(String comentario){
+        this.comentario = comentario;
     }
     
    
