@@ -1,10 +1,5 @@
 
 
-<%
-    
-
-%>
-
 <%@page import="java.time.LocalDate"%>
 <!DOCTYPE html>
 <html>

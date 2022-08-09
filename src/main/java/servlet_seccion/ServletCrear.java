@@ -158,25 +158,44 @@ public class ServletCrear extends HttpServlet {
         //gestión pago
         //uno de los dos jugadores ha de pagar minimo una hora, no se puede seguir
         //si existe bono hay que gestionar el pago del bono, si no es correcto no seguir
-        
-        LocalDate fe = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate fe = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
+        Objetos p;
         if(!gestionPares(idj1, idj2)){
-            mensaje.add(" !!!Error - Se ha producido un error al crear el objeto pares...");
-            
-        } else if (!gestionPago(paga1, horas_p1, paga2, horas_p2)){
-             mensaje.add(" !!!Error - Se ha producido un error en el proceso de pago...");
-             
-        } else if (comprobarActualizarBono()){
-            int id_pares = obj_pares.getId();
-            Objetos p = new Partido(fe, id_pares, horasp1, horasp2, id_bono1, id_bono2, comentario);
-            IDao interfaceDao = new PartidoDao();
-            crearObjeto(interfaceDao, p);
-        } else {
-             mensaje.add(" !!!Error - Se ha producido un error y no es posible continuar...");
-             mensaje.add(" El error posiblemente se ha originado en el pago con bono...");
+          mensaje.add(" !!!Error - Se ha producido un error al crear el objeto pares...");
         }
+        
+        if(!gestionPago(paga1, horas_p1, paga2, horas_p2)){
+           mensaje.add(" !!!Error - Se ha producido un error en el proceso de pago...");
+        }
+        
+        if((p = crearPartido(fe, comentario)) == null){
+           mensaje.add(" !!!Error - Se ha producido un error al crear el objeto partido...");
+        }
+       
+        if(mensaje.size() > 0){
+            mensaje.add(" !!!Error - Se ha producido un error y no es posible continuar...");
+        } else {
+            if(comprobarActualizarBono()){
+                IDao interfaceDao = new PartidoDao();
+                crearObjeto(interfaceDao, p);
+            } else {
+                mensaje.add(" !!!Error - Se ha producido un error y no es posible continuar...");
+                mensaje.add(" El error posiblemente se ha originado en el pago con bono...");
+            }
+        }
+        
         request.setAttribute("mensaje", mensaje);
         request.getRequestDispatcher("comunes/alerta.jsp").forward(request, response);
+    }
+    
+    
+    private Objetos crearPartido(LocalDate fe, String comentario){
+        int id_pares = obj_pares.getId();
+        if(id_pares <= 0 || obj_pares == null){
+            return null;
+        }    
+         Objetos p = new Partido(fe, id_pares, horasp1, horasp2, id_bono1, id_bono2, comentario);
+        return p;
     }
     
     
@@ -314,9 +333,12 @@ public class ServletCrear extends HttpServlet {
         Jugador j2 = getJugador(id_j2);
         
         Pares p = new Pares(j1.getNombre(), j1.getId(), j2.getNombre(), j2.getId());
-        IDao interfaceDao = new ParesDao();
+        ParesDao interfaceDao = new ParesDao();
         v = interfaceDao.crear(p);
-        obj_pares = p;
+        if(v == 1){
+           obj_pares = interfaceDao.getParesIdJu(j1.getId(), j2.getId());
+           return 1;
+        } 
         return v;
     }
     
